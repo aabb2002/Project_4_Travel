@@ -1,9 +1,0 @@
-number_of_classes = int(input('How many classes are you taking this semester? '))
-class_list = []
-
-for x in range(number_of_classes):
-    x = input('What is the name of your class? ')
-    class_list.append(x)
-
-for x in class_list:
-    print(x)
