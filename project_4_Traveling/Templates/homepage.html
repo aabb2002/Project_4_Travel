@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTravelEvents</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>TODO: complete this page</h1>
+    <form method = "GET" action = "getusertravelinfo">
+        <label> What's your destinations? </label>
+        <p>Country: </p><input name = "destin_country"><br>
+        <p>City: </p><input name = "destin_city"><br>
+        <label>For the currecny converter, enter the base currency and destination currency.</label>
+        <p>Base currency: </p><input name = "base_cuurency"><br>
+        <p>Destination currency: </p><input name = "destin_currency">
+        <button type = "submit">Go!</button>
+    </form>
+</body>
+</html>
