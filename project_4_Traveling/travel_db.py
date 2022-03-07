@@ -2,14 +2,13 @@
 Project4 SQLite Andrew Abbe Daria K  Dan Smestad ITEC 2905-80 Software Dev. Capstone Clara James
  
 """
-from email import message
 import sqlite3
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class MyTravelEventDB():
 
-    def create_table():
+    def create_table():  #  acrumin
         with sqlite3.connect(db) as conn:
             conn.execute('CREATE TABLE IF NOT EXISTS MyTravelEvent (id int, event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text)')
         #need to have:IF NOT EXISTS for tables and DB's. THis program 
@@ -25,7 +24,7 @@ class MyTravelEventDB():
         conn.close()
 
 
-    def search_records_by_name():
+    def search_records_by_name():  # setup id
         try:
             search_name = input('enter new event name: ')
             search_cases = search_name.lower() 
@@ -40,7 +39,7 @@ class MyTravelEventDB():
         conn.close()
         
 
-    def add_new_record():                
+    def add_new_record():  #  save file                
             new_name = input('enter new event name: ')
             new_country = input('enter Country name: ')
             new_catch_count = int(input('enter currency used: ')) 
@@ -86,9 +85,9 @@ class MyTravelEventDB():
             try:                 
                 for row in conn.execute('SELECT * FROM MyTravelEvent WHERE lower(name) like ?', (delete_event, )):
                     conn.execute('DELETE FROM MyTravelEvent WHERE name = ? ', (row[0],  ))
-                    message('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
+                    print('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
             except Exception as e:                   
-                    message('\nnot found in database', e)             
+                    print('\nnot found in database', e)             
             #currently only exact match deletes record, update with any case entery sqlite does care case.   
         conn.close()
 
