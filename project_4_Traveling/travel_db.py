@@ -2,16 +2,17 @@
 Project4 SQLite Andrew Abbe Daria K  Dan Smestad ITEC 2905-80 Software Dev. Capstone Clara James
  
 """
+from logging import raiseExceptions
 import sqlite3
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class MyTravelEventDB():
 
-    def create_table():  #  acrumin
+    def create_table():  # currency is acronym args for countries
         with sqlite3.connect(db) as conn:
             conn.execute('CREATE TABLE IF NOT EXISTS MyTravelEvent (id int, event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text)')
-        #need to have:IF NOT EXISTS for tables and DB's. THis program 
+        #need to have:IF NOT EXISTS for tables and DB's.
         conn.close() 
 
 
@@ -26,10 +27,11 @@ class MyTravelEventDB():
 
     def search_records_by_name():  # setup id
         try:
-            search_name = input('enter new event name: ')
-            search_cases = search_name.lower() 
+            event_id = input('enter new event name: ')
+            if event_id < 0:           
+                raise RecordError('Provide a positive number')   
             conn = sqlite3.connect(db)
-            results = conn.execute('SELECT * FROM MyTravelEvent WHERE name like ?', (search_cases, ))
+            results = conn.execute('SELECT * FROM MyTravelEvent WHERE name like ?', (event_id))
             first_row = results.fetchone()
             for row in first_row:
                     print('\nYour evnet name: ', row)                     
@@ -98,8 +100,8 @@ class MyTravelEventDB():
         print(msg)  # pass print statements.
 
 
-    class RecordError(Exception):
-        pass
+class RecordError(Exception):
+    pass
 
    
 # if __name__ == '__main__':
