@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved destinations</title>
+</head>
+<body>
+    <!-- conversion rate
+    event name 
+    event date
+    city country -->
+    <table border = 1>
+        <thead> 
+            <!-- table headers -->
+           <td>Country: </td>
+           <td>City: </td>
+           <td>Event id: </td>
+           <td>Event name: </td>
+           <td>Convertion: {{}}{{}}[TODO: insert currency variables]</td>
+        </thead>
+        
+        {% for row in rows %}
+           <tr>
+              <td>{{row["destin_country"]}}</td>
+              <td>{{row["destin_city"]}}</td>
+              <td> {{row["destin_yelp_event_id"]}}</td>
+              <td>{{row['destin_yelp_event_name']}}</td>	
+           </tr>
+        {% endfor %}
+    </table>
+     
+    <a href = "/homepage.html">Go back to home page</a>
+</body>
+</html>
