@@ -2,6 +2,8 @@
 from urllib import response
 import requests
 import os
+import time
+from datetime import date, datetime
 
 weather_url = 'https://api.openweathermap.org/data/2.5/onecall'
 yelp_url = 'https://api.yelp.com/v3/events'
@@ -28,16 +30,43 @@ def get_travel_info(destin_country, destin_city):
 
 
 def get_conversion_rate(destin_currency,base_currency):
-
     params = {
         'apiKey': currency_convertor_key,
-        'q': base_currency + '_' + destin_currency,
+        'q': base_currency + "_" + destin_currency,
         'compact': 'ultra'
     }
-
     conversion_response = requests.get(currency_convertor_url, params).json()
     return conversion_response
 
+# def get_location(destin_city, destin_country):
+#     destin_city, destin_country = '',''
+#     #question about notation above
+#     location=f'{destin_city},{destin_country}'
+#     return location
+
+
+# def get_weather_forecast(location, weather_key):
+#     try:
+#         query={'q':location,'units':'metric', 'appid':weather_key}
+#         response = requests.get(weather_url,params = query)
+#         response.raise_for_status() #raise exception for 400 and 500 errors
+#         data = response.json() #this may error too, if response is not json
+
+#         list_of_forecast = data['list']
+#         #print(list_of_forecast)
+#         for forecast in list_of_forecast:
+#             temp = forecast['main']['temp']
+#             temp_round = round(temp)
+#             timestamp=forecast['dt']
+#             wind_speed = forecast['wind']['speed']
+#             description = forecast['weather'][0]['description']
+#             forecast_date = datetime.date.fromtimestamp(timestamp)
+#             forecast_time = time.time()    
+#         return forecast, None #data is a tuple
+#     except Exception as e:
+#         print(e)
+#         #print(response.text) #added for debugging
+#         return None, e #tuple will be none
 
 def get_weather_forecast(destin_country, destin_city):
 
@@ -53,13 +82,14 @@ def get_weather_forecast(destin_country, destin_city):
     }
 
     forecast_response = requests.get(weather_url, params=params).json()
+
     return forecast_response
 
 
 def convert_location_to_lat_and_lon(destin_city, destin_country):
 
     params = {
-        'q' : destin_city + ', ' + destin_country, 
+        'q' : f'{destin_city},{destin_country}', 
         'appid': weather_key, 
         'limit': 1
     }
