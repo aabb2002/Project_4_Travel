@@ -32,7 +32,7 @@ class MyTravelEventDB():
             for row in first_row:
                     print('\nYour evnet name: ', row)                     
         except:
-            message('\nnot found in database')                   
+            print('\nnot found in database')                   
         conn.close()
         
 
@@ -56,25 +56,7 @@ class MyTravelEventDB():
                     print('invalid') 
                 conn.close()
 
-    ## TODO what access can we give here to edit all five data field or limit?   
-    def edit_existing_record():
-        edit_name = input('Please enter the name of the event you want to edit: ')  # getting name for edit
-        edit_date = input('enter new data: ')  # getting the new record unbmer for updating
-        while True:  # needs to check number is an int
-            if edit_event_id.isnumeric() is False:
-                edit_event_id = input('Please enter a  ')  # TODO 
-            else:
-                break   
-        edit_event_id = int(edit_event_id)           
-        with sqlite3.connect(db) as conn:
-            try:                  
-                conn.execute('UPDATE MyTravelEvent SET '' = ? WHERE eventID = ?', (   ))
-            except:
-                message('record does not exist')  
-            # edits an existing record. message passed if user wants to edit record that does not exist?'
-        conn.close()
 
-    ##TODO  name or ID
     # deletes existing record. What if user wants to delete record that does not exist?
     def delete_record():
         delete_event = input('enter event name to delete: ')
@@ -83,17 +65,12 @@ class MyTravelEventDB():
             try:                 
                 for row in conn.execute('SELECT * FROM MyTravelEvent WHERE lower(name) like ?', (delete_event, )):
                     conn.execute('DELETE FROM MyTravelEvent WHERE name = ? ', (row[0],  ))
-                    message('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
+                    print('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
             except Exception as e:                   
-                    message('\nnot found in database', e)             
+                    print('\nnot found in database', e)             
             #currently only exact match deletes record, update with any case entery sqlite does care case.   
         conn.close()
 
-
-    def message(msg): # messages verses printing
-        """ Prints a message for the user
-        :param msg: the message to print"""
-        print(msg)  # pass print statements.
 
 
 class RecordError(Exception):
