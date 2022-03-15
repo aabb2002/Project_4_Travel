@@ -37,11 +37,11 @@ class MyTravelEventDB():
         
 
     def add_new_record():  #  save file                
-            new_name = input('enter new event name: ')
-            new_date = input('enter Country name: ')
-            new_country = input('enter Country name: ')
-            new_city = input('enter Country name: ')
-            new_currency= int(input('enter currency used: '))
+            new_name = input('enter an event name: ')
+            new_date = input('enter a Date : ')
+            new_country = input('enter a Country name: ')
+            new_city = input('enter a City name: ')
+            new_currency= int(input('enter three letter currency code: '))
             #addsnew reords to db, duplicate check in row with select query to db, tells user name, menu reloads. 
             with sqlite3.connect(db) as conn:
                 try:  # validateoin for event in db, checking by event_name. Possbly to same name multplie dates like  a festiville over severakl days.                     
@@ -70,7 +70,6 @@ class MyTravelEventDB():
                     print('\nnot found in database', e)             
             #currently only exact match deletes record, update with any case entery sqlite does care case.   
         conn.close()
-
 
 
 class RecordError(Exception):
