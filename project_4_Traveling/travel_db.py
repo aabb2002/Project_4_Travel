@@ -23,11 +23,11 @@ class MyTravelEventDB():
 
     def search_records_by_name():  # setup id for searches/possbile change for event name.
         try:
-            event_id = input('enter new event name: ')
-            if event_id < 0:           
+            event_name = input('enter new event name: ')
+            if event_name < 0:           
                 raise RecordError('Provide a positive number')   
             conn = sqlite3.connect(db)
-            results = conn.execute('SELECT * FROM MyTravelEvent WHERE event_id like ?', (event_id))
+            results = conn.execute('SELECT * FROM MyTravelEvent WHERE event_id like ?', (event_name))
             first_row = results.fetchone()
             for row in first_row:
                     print('\nYour evnet name: ', row)                     
