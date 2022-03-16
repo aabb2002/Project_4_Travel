@@ -7,7 +7,7 @@ class MyTravelEventDB():
 
     def create_table():  # currency is acronym args for countries
         with sqlite3.connect(db) as conn:
-            conn.execute('CREATE TABLE IF NOT EXISTS MyTravelEvent (id int, event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text)')
+            conn.execute('CREATE TABLE IF NOT EXISTS MyTravelEvent (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text)')
         #need to have:IF NOT EXISTS for tables and DB's.
         conn.close() 
 
@@ -17,8 +17,9 @@ class MyTravelEventDB():
         results = conn.execute('SELECT * FROM MyTravelEvent')  #calls for all records from db 
         #message('\nAll event records:\n ')
         for row in results:
-            print(row)
+            #print(row)  # how does this get back o the web            
         conn.close()
+        return # reading list example book object event object.
 
 
     def search_records_by_name():  # setup id for searches/possbile change for event name.
@@ -37,7 +38,7 @@ class MyTravelEventDB():
         
 
     def add_new_record():  #  save file                
-            new_name = input('enter an event name: ')
+            new_name = input('enter an event name: ') # add book example  weather save a highlight like average temp example.
             new_date = input('enter a Date : ')
             new_country = input('enter a Country name: ')
             new_city = input('enter a City name: ')
@@ -55,21 +56,6 @@ class MyTravelEventDB():
                 except ValueError:                   
                     print('invalid') 
                 conn.close()
-
-
-    # deletes existing record. What if user wants to delete record that does not exist?
-    def delete_record():
-        delete_event = input('enter event name to delete: ')
-        delete_event = delete_event.lower()     
-        with sqlite3.connect(db) as conn:
-            try:                 
-                for row in conn.execute('SELECT * FROM MyTravelEvent WHERE lower(name) like ?', (delete_event, )):
-                    conn.execute('DELETE FROM MyTravelEvent WHERE name = ? ', (row[0],  ))
-                    print('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
-            except Exception as e:                   
-                    print('\nnot found in database', e)             
-            #currently only exact match deletes record, update with any case entery sqlite does care case.   
-        conn.close()
 
 
 class RecordError(Exception):
