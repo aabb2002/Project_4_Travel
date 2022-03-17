@@ -17,13 +17,23 @@ class Event:
 
     def save_event(self):
         if self.event_name:
-            self.myTravelEvent._add_event(self)
+            self.myTravelEvent.add_event(self)
 
 
 class MyTravelEvents:
 
     """ class to hold and manage a list of event. All database objects created are the same object.
-    Provides operations to create database add, display/query the database.need to have: IF NOT EXISTS for tables and DB's. """
+    Provides operations to create database add, display/query the database. need to have a command:
+    "IF NOT EXISTS for tables and DB's." """
+
+    def main():
+             
+        with sqlite3.connect(db) as con:
+            #keeping this for testing creating  table.
+       
+            con.execute('INSERT INTO Events VALUES ("Birthday", "2022-04-15" , "USA", Minneapolis, "EUR", 78')
+            con.execute('INSERT INTO Events VALUES ("Wedding", "2022-04-01" , "USA", Minneapolis, "EUR", 88')
+        con.close()  
 
 
     def __init__(self):
@@ -54,8 +64,9 @@ class MyTravelEvents:
         return events  
 
  
-    def _add_event(self, event)  #  save button """ Adds evnet to database. Raises RecordError if a event wit (not case sensitive) is already in the database."""   
-        
+    def add_event(self, event):
+        """save button - Adds evnet to database. Raises RecordError if 
+        a event wit (not case sensitive) is already in the database."""         
         
         with sqlite3.connect(db) as con:
             try:             
@@ -72,3 +83,8 @@ class MyTravelEvents:
 
 class RecordError(Exception):
     pass
+
+
+
+if __name__ == '__main__':
+    main()
