@@ -56,25 +56,17 @@ class MyTravelEvent:
         return events  
 
  
-    # def _add_event(self)  #  save file                
-    #         new_name = input('enter an event name: ') # add book example  weather save a highlight like average temp example.
-    #         new_date = input('enter a Date : ')
-    #         new_country = input('enter a Country name: ')
-    #         new_city = input('enter a City name: ')
-    #         new_currency= int(input('enter three letter currency code: '))
-    #         #addsnew reords to db, duplicate check in row with select query to db, tells user name, menu reloads. 
-    #         with sqlite3.connect(db) as conn:
-    #             try:  # validateoin for event in db, checking by event_name. Possbly to same name multplie dates like  a festiville over severakl days.                     
-    #                 row_add = conn.execute('SELECT * FROM MyTravelEvent WHERE event_name like ?', (new_name,))
-    #                 first_row = row_add.fetchone()
-    #                 if first_row:
-    #                     print(new_name, '\'s event is in our db already!')                        
-    #                 else:                               
-    #                     conn.execute('INSERT INTO MyTravelEvent VALUES (?, ?, ?, ?, ?)', (new_name, new_date, new_country, new_city, new_currency ) )
-    #                     print(new_name, '\'s name has added to our db.')
-    #             except ValueError:                   
-    #                 print('invalid') 
-    #             conn.close()
+    def _add_event(self)  #  save button """ Adds evnet to database. Raises RecordError if a event wit (not case sensitive) is already in the database."""   
+        insert_sql = 'INSERT INTO Events (event_name, date, country, city, currency, temp) VALUES (?, ?, ?, ?, ?, ?)'
+        try: 
+            with sqlite3.connect(db) as con:
+                res = con.execute(insert_sql, (event_name.n) )
+                new_event_name = res.lastrowid  # Get the ID of the new row in the table 
+                event_name = new_event_name  # Set this book's ID
+        except sqlite3.IntegrityError as e:
+                raise RecordError(f'Error - this event is in the database. {event_name}') from e
+        finally:
+            con.close()
 
 
 class RecordError(Exception):
