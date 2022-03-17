@@ -1,101 +1,79 @@
-
 import sqlite3
+from datetime import date
+
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
-class MyTravelEventDB():
+class Event:
+    def __int__(self, event_name, country, city, currency, current_temp):
+        self.event_name = event_name
+        self.date = date
+        self.country = country
+        self.city = city
+        self.currency = currency
+        self.current_temp = current_temp
 
-    def create_table():  # currency is acronym args for countries
-        with sqlite3.connect(db) as conn:
-            conn.execute('CREATE TABLE IF NOT EXISTS MyTravelEvent (id int, event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text)')
-        #need to have:IF NOT EXISTS for tables and DB's.
-        conn.close() 
+        self.myTravelEvent = MyTravelEvents()
 
-
-    def display_all_records():  # records for travel from bookmark/saved data.
-        conn = sqlite3.connect(db)  # connects datbase link
-        results = conn.execute('SELECT * FROM MyTravelEvent')  #calls for all records from db 
-        #message('\nAll event records:\n ')
-        for row in results:
-            print(row)
-        conn.close()
+    def save_event(self):
+        if self.event_name:
+            self.myTravelEvent._add_event(self)
 
 
-    def search_records_by_name():  # setup id for searches/possbile change for event name.
-        try:
-            event_id = input('enter new event name: ')
-            if event_id < 0:           
-                raise RecordError('Provide a positive number')   
-            conn = sqlite3.connect(db)
-            results = conn.execute('SELECT * FROM MyTravelEvent WHERE event_id like ?', (event_id))
-            first_row = results.fetchone()
-            for row in first_row:
-                    print('\nYour evnet name: ', row)                     
-        except:
-            message('\nnot found in database')                   
-        conn.close()
+class MyTravelEvents:
+
+    """ class to hold and manage a list of event. All database objects created are the same object.
+    Provides operations to create database add, display/query the database.need to have: IF NOT EXISTS for tables and DB's. """
+
+
+    def __init__(self):
+        create_table_sql = 'CREATE TABLE IF NOT EXISTS MyTravelEvent (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text, current_temp small int)'
+                                 
+        con = sqlite3.connect(db)
         
+        with con:
+            con.execute(create_table_sql)
 
-    def add_new_record():  #  save file                
-            new_name = input('enter new event name: ')
-            new_date = input('enter Country name: ')
-            new_country = input('enter Country name: ')
-            new_city = input('enter Country name: ')
-            new_currency= int(input('enter currency used: '))
-            #addsnew reords to db, duplicate check in row with select query to db, tells user name, menu reloads. 
-            with sqlite3.connect(db) as conn:
-                try:  # validateoin for event in db, checking by event_name. Possbly to same name multplie dates like  a festiville over severakl days.                     
-                    row_add = conn.execute('SELECT * FROM MyTravelEvent WHERE event_name like ?', (new_name,))
-                    first_row = row_add.fetchone()
-                    if first_row:
-                        print(new_name, '\'s event is in our db already!')                        
-                    else:                               
-                        conn.execute('INSERT INTO MyTravelEvent VALUES (?, ?, ?, ?, ?)', (new_name, new_date, new_country, new_city, new_currency ) )
-                        print(new_name, '\'s name has added to our db.')
-                except ValueError:                   
-                    print('invalid') 
-                conn.close()
+        con.close()
 
-    ## TODO what access can we give here to edit all five data field or limit?   
-    def edit_existing_record():
-        edit_name = input('Please enter the name of the event you want to edit: ')  # getting name for edit
-        edit_date = input('enter new data: ')  # getting the new record unbmer for updating
-        while True:  # needs to check number is an int
-            if edit_event_id.isnumeric() is False:
-                edit_event_id = input('Please enter a  ')  # TODO 
-            else:
-                break   
-        edit_event_id = int(edit_event_id)           
-        with sqlite3.connect(db) as conn:
-            try:                  
-                conn.execute('UPDATE MyTravelEvent SET '' = ? WHERE eventID = ?', (   ))
-            except:
-                message('record does not exist')  
-            # edits an existing record. message passed if user wants to edit record that does not exist?'
-        conn.close()
+    def get_all_events(self):
+        """ returns an events list """
 
-    ##TODO  name or ID
-    # deletes existing record. What if user wants to delete record that does not exist?
-    def delete_record():
-        delete_event = input('enter event name to delete: ')
-        delete_event = delete_event.lower()     
-        with sqlite3.connect(db) as conn:
-            try:                 
-                for row in conn.execute('SELECT * FROM MyTravelEvent WHERE lower(name) like ?', (delete_event, )):
-                    conn.execute('DELETE FROM MyTravelEvent WHERE name = ? ', (row[0],  ))
-                    message('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
-            except Exception as e:                   
-                    message('\nnot found in database', e)             
-            #currently only exact match deletes record, update with any case entery sqlite does care case.   
-        conn.close()
+        get_all_events_sql = 'SELECT * FROM MyTravelEvent'
 
+        con = sqlite3.connect(db)
+        con.row_factory = sqlite3.Row
+        rows = con.execute(get_all_events_sql)
+        events = []
 
-    def message(msg): # messages verses printing
-        """ Prints a message for the user
-        :param msg: the message to print"""
-        print(msg)  # pass print statements.
+        for r in rows:
+            event = Event(r['event_name'], r['Date'], r['country'], r['city'], r['currency'], r['current_temp'])
+            event.append(event)
+
+        con.close()            #  example book object event object.
+        return events  
+
+ 
+    def _add_event(self, event)  #  save button """ Adds evnet to database. Raises RecordError if a event wit (not case sensitive) is already in the database."""   
+        
+        
+        with sqlite3.connect(db) as con:
+            try:             
+                row_add = con.execute('SELECT * FROM MyTravelEvent WHERE event_name like ?', (event,))
+                first_row = row_add.fetchone()
+                if first_row:
+                    raise RecordError(f'Error - this event is in the database. {event}')                 
+                else:
+                    insert_sql = 'INSERT INTO Events (event_name, date, country, city, currency, current_temp) VALUES (?, ?, ?, ?, ?, ?)'
+        
+            except ValueError as e:
+                print('invalid')
+
+                con.close()
 
 
 class RecordError(Exception):
     pass
 
+
+                            
