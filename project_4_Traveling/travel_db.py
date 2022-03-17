@@ -48,7 +48,7 @@ class MyTravelEvents:
 
         for r in rows:
             event = Event(r['event_name'], r['Date'], r['country'], r['city'], r['currency'], r['current_temp'])
-            event.append(event)
+            events.append(event)
 
         con.close()            #  example book object event object.
         return events  
@@ -64,12 +64,10 @@ class MyTravelEvents:
                 if first_row:
                     raise RecordError(f'Error - this event is in the database. {event}')                 
                 else:
-                    insert_sql = 'INSERT INTO Events (event_name, date, country, city, currency, current_temp) VALUES (?, ?, ?, ?, ?, ?)'
-        
+                    con.execute('INSERT INTO Events (event_name, date, country, city, currency, current_temp VALUES (?, ?, ?, ?, ?, ?')
             except ValueError as e:
-                print('invalid')
-
-                con.close()
+                return(e)
+            con.close()
 
 
 class RecordError(Exception):
