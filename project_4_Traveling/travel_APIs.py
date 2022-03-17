@@ -88,14 +88,38 @@ def get_weather_forecast(destin_country, destin_city):
 
 def convert_location_to_lat_and_lon(destin_city, destin_country):
 
+    params = generate_request_params_for_location(destin_city, destin_country)
+    
+    # 2. making a request to the api - mocking may be needed here
+    places_location_response = make_geocode_request(geocoder_url, params)
+    
+    # 3. getting data from the response - 
+    # TODO what if no data is returned? What does this do?
+    # TODO what about no connection, server error? 
+    latitude, longitude = get_first_place_lat_lon(places_location_response)
+    
+    return latitude, longitude
+
+
+def generate_request_params_for_location(city, country):
+    # todo validate data? - 
+    # 1. generating parameters dictionary 
     params = {
-        'q' : f'{destin_city},{destin_country}', 
-        'appid': weather_key, 
+        'q' : f'{city},{country}', 
+        'appid': weather_key,   
         'limit': 1
     }
+    return params
 
-    lat_and_lon_response = requests.get(geocoder_url, params=params).json()
 
-    latitude = lat_and_lon_response[0]['lat']
-    longitude = lat_and_lon_response[0]['lon']
+# todo mock this part 
+def make_geocode_request(gecoder_url, params):
+    places_location_response = requests.get(geocoder_url, params=params).json()
+    return places_location_response
+
+
+def get_first_place_lat_lon(places_location_response):
+    # todo error handling - what list is empty? 
+    latitude = places_location_response[0]['lat']
+    longitude = places_location_response[0]['lon']
     return latitude, longitude
