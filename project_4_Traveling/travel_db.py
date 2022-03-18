@@ -1,8 +1,8 @@
 import sqlite3
-from datetime import date
 
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
+
 
 class Event:
     def __int__(self, event_name, date, country, city, currency, current_temp):
@@ -37,6 +37,7 @@ class MyTravelEvents:
 
         con.close()
 
+
     def get_all_events(self):
         """ returns an events list """
 
@@ -56,19 +57,19 @@ class MyTravelEvents:
 
  
     def add_event(self, event):
-        """save button - Adds evnet to database. Raises RecordError if 
-        a event wit (not case sensitive) is already in the database."""         
-        
-        with sqlite3.connect(db) as con:
-            try:             
-                row_add = con.execute('SELECT * FROM Events WHERE event_name like ?', (event,))
-                first_row = row_add.fetchone()
-                if first_row:
-                    raise RecordError(f'Error - this event is in the database. {event}')                 
-                else:
-                    con.execute('INSERT INTO Events (event_name, date, country, city, currency, current_temp VALUES (?, ?, ?, ?, ?, ?')
-            except ValueError as e:
-                return(e)
+        """save button - Adds event to database. Raises RecordError if 
+        a event is already in the database (event_name unique.) TODO - do we need to think about case? """     
+
+        event_insert_sql = 'INSERT INTO Events (event_name, date, country, city, currency, current_temp VALUES (?, ?, ?, ?, ?, ?'      
+               
+        try: 
+            with sqlite3.connect(db) as con:
+                res = con.execute(event_insert_sql, (event.event_name, event.date, event.country, event.city, event.currency, event.current_temp ) )     
+                new_id = res.lastrowid  # Get the ID of the new row in the table 
+                event.event_name = new_id  # Set this event ID                  
+        except sqlite3.IntegrityError as e:
+            raise RecordError(f'Error - this event is already in the database. {event}') from e
+        finally:
             con.close()
  
 
