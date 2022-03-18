@@ -5,7 +5,7 @@ from datetime import date
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class Event:
-    def __int__(self, event_name, country, city, currency, current_temp):
+    def __int__(self, event_name, date, country, city, currency, current_temp):
         self.event_name = event_name
         self.date = date
         self.country = country
@@ -26,18 +26,9 @@ class MyTravelEvents:
     Provides operations to create database add, display/query the database. need to have a command:
     "IF NOT EXISTS for tables and DB's." """
 
-    def main():
-             
-        with sqlite3.connect(db) as con:
-            #keeping this for testing creating  table.
-       
-            con.execute('INSERT INTO Events VALUES ("Birthday", "2022-04-15" , "USA", Minneapolis, "EUR", 78')
-            con.execute('INSERT INTO Events VALUES ("Wedding", "2022-04-01" , "USA", Minneapolis, "EUR", 88')
-        con.close()  
-
 
     def __init__(self):
-        create_table_sql = 'CREATE TABLE IF NOT EXISTS MyTravelEvent (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text, current_temp small int)'
+        create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text, current_temp small int)'
                                  
         con = sqlite3.connect(db)
         
@@ -49,7 +40,7 @@ class MyTravelEvents:
     def get_all_events(self):
         """ returns an events list """
 
-        get_all_events_sql = 'SELECT * FROM MyTravelEvent'
+        get_all_events_sql = 'SELECT * FROM Events'
 
         con = sqlite3.connect(db)
         con.row_factory = sqlite3.Row
@@ -70,7 +61,7 @@ class MyTravelEvents:
         
         with sqlite3.connect(db) as con:
             try:             
-                row_add = con.execute('SELECT * FROM MyTravelEvent WHERE event_name like ?', (event,))
+                row_add = con.execute('SELECT * FROM Events WHERE event_name like ?', (event,))
                 first_row = row_add.fetchone()
                 if first_row:
                     raise RecordError(f'Error - this event is in the database. {event}')                 
@@ -79,12 +70,10 @@ class MyTravelEvents:
             except ValueError as e:
                 return(e)
             con.close()
-
+ 
 
 class RecordError(Exception):
     pass
 
 
 
-if __name__ == '__main__':
-    main()
