@@ -66,7 +66,7 @@ class MyTravelEvents:
             with sqlite3.connect(db) as con:
                 res = con.execute(event_insert_sql, (event.event_name, event.date, event.country, event.city, event.currency, event.current_temp ) )     
                 new_id = res.lastrowid  # Get the ID of the new row in the table 
-                event.event_name = new_id  # Set this event ID                  
+                event.event_name = new_id  # Set this event                   
         except sqlite3.IntegrityError as e:
             raise RecordError(f'Error - this event is already in the database. {event}') from e
         finally:
