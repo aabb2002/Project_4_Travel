@@ -32,7 +32,7 @@ class MyTravelEventDB():
             for row in first_row:
                     print('\nYour evnet name: ', row)                     
         except:
-            message('\nnot found in database')                   
+            print('\nnot found in database')                   
         conn.close()
         
 
@@ -70,7 +70,7 @@ class MyTravelEventDB():
             try:                  
                 conn.execute('UPDATE MyTravelEvent SET '' = ? WHERE eventID = ?', (   ))
             except:
-                message('record does not exist')  
+                print('record does not exist')  
             # edits an existing record. message passed if user wants to edit record that does not exist?'
         conn.close()
 
@@ -83,9 +83,9 @@ class MyTravelEventDB():
             try:                 
                 for row in conn.execute('SELECT * FROM MyTravelEvent WHERE lower(name) like ?', (delete_event, )):
                     conn.execute('DELETE FROM MyTravelEvent WHERE name = ? ', (row[0],  ))
-                    message('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
+                    print('\nYour EVENT:', delete_event, 'was deleted, \nplease use menu to list all to verify.')           
             except Exception as e:                   
-                    message('\nnot found in database', e)             
+                    print('\nnot found in database', e)             
             #currently only exact match deletes record, update with any case entery sqlite does care case.   
         conn.close()
 
