@@ -3,3 +3,4 @@ venv
 __pycache__
 .vscode
 env
+My_Travel_Events.sqlite
