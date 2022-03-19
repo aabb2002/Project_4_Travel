@@ -5,7 +5,7 @@ from weather_api import get_weather_forecast
 from yelp_api import get_travel_info
 
 import sqlite3 as sql
-from travel_db import MyTravelEventDB
+from travel_db import MyTravelEvents
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -29,22 +29,15 @@ def myTravelEventInfo():
     destin_currency = request.args.get('destin_currency')
     #our base currency is USD but changing it to any other currency abbreviation would work the same
     #if changing, change the html homepage explanation to the user
-    base_currency = 'USD'
+    
 
     if (destin_country, destin_city, destin_from_date, destin_to_date, destin_currency):
-
-
         #userinfo = get_travel_info(destin_country, destin_city, destin_from_date, destin_to_date)
-        event_total = get_travel_info(destin_country, destin_city, destin_from_date, destin_to_date)
-        conversion_rate = get_conversion_rate(destin_currency,base_currency)
+        event_total = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
+        conversion_rate = get_conversion_rate(destin_currency)
         #forecast_response = get_weather_forecast(destin_country, destin_city)
         weather_total = get_weather_forecast(destin_country, destin_city)
         conversion_rate_rounded = round(conversion_rate,2)
-
-    if (destin_country, destin_city,destin_currency,base_currency):
-        userinfo = get_travel_info(destin_country, destin_city)
-        conversion_rate = get_conversion_rate(destin_currency)
-        forecast_response = get_weather_forecast(destin_country, destin_city)
 
         return render_template(
             'destination_info.html', 
@@ -56,9 +49,7 @@ def myTravelEventInfo():
             #forecast_response= forecast_response,
             #forecast = forecast,
             weather_total = weather_total, 
-            event_total= event_total
-            conversion_rate=conversion_rate, 
-            forecast_response= forecast_response)
+            event_total= event_total)
 
     else:
         return "error"

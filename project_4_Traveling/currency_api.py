@@ -12,6 +12,7 @@ def get_conversion_rate(destin_currency):
     params = generate_request_params_for_currency(destin_currency)
     
     conversion_response = make_currency_requests(currency_convertor_url, params)
+
     return conversion_response
 
 
@@ -27,4 +28,5 @@ def generate_request_params_for_currency(destin_currency):
 
 def make_currency_requests(currency_convertor_url, params):
     conversion_response = requests.get(currency_convertor_url, params).json()
-    return conversion_response
+    for rate in conversion_response.items():
+        return(rate[1])
