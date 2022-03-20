@@ -7,12 +7,24 @@
     <title>MyTravelEvent</title>
 </head>
 <body>
-   <h1>TODO: complete this page</h1>
-        <label> Information for {{destin_city}}, {{destin_country}}</label>
-        <!-- Weather and Yelp need JSON parsing -->
-        <!-- <p>Weather info: {{forecast_response.temp}}{{forecast_response}}</p> -->
-        <!-- <p>On {forecast_time},at {forecast_date} the temperature will be {temp_round}C, the wind speed will be {wind_speed} km/h, can be described as {description}</p> -->
-        <p>Yelp Events table for the dates {{userinfo}}</p>
-        <!-- <p>Currency Converter: {{convertion_rate}}</p>  -->
+   <h4>MyEventInfo</h4>
+        <label> Information for {{destin_city}}, {{destin_country}}</label> <br>
+
+        <label for="event_info">Information regarding your Yelp events for the dates entered:</label>
+
+        <p name="event_info">{{event_total}}</p><br>
+        <!-- TODO: parse Yelp and find events by dates -->
+
+        <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week</label>
+
+        <p name = "weather_today">Weather today in {{destin_city}}: {{weather_total}}</p><br> 
+
+        <!-- TODO: WEATHER FOR THE WEEK -->
+
+        <label for="currency_converter">Currency converter: $1 USD =  {{conversion_rate}} {{destin_currency}}</label><br>
+        
+        <a href = "saved_destinations.html">Go to saved destination page</a><br>
+        <a href = "homepage.html">Go to homepage</a>
 </body>
+
 </html>

@@ -24,7 +24,9 @@ def get_weather_forecast(destin_country, destin_city):
 
     forecast_response = requests.get(weather_url, params=params).json()
 
-    return forecast_response
+    weather_total = get_weather_description(forecast_response)
+
+    return weather_total
 
 
 def convert_location_to_lat_and_lon(destin_city, destin_country):
@@ -64,3 +66,22 @@ def get_first_place_lat_lon(places_location_response):
     latitude = places_location_response[0]['lat']
     longitude = places_location_response[0]['lon']
     return latitude, longitude
+
+def get_weather_description(forecast_response):
+    print(forecast_response)
+    weather= forecast_response['current']
+    print(weather)
+    #for key, value in weather.items():
+
+        #temperature= {value['temp']}
+        #wind =  {value['wind_speed']}
+        #inter = weather['weather']
+        #description = inter['0']['description']
+    
+    temperature = weather['temp']
+    wind = weather['wind_speed']    
+    weather_total = f'Currently it is {temperature}F. Wind speed is {wind} mph.'
+        #Can be described as {description}'
+        #TODO: 
+
+    return weather_total

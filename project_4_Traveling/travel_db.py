@@ -3,7 +3,6 @@ import sqlite3
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
-
 class Event:
     def __int__(self, event_name, date, country, city, currency, current_temp):
         self.event_name = event_name
@@ -34,8 +33,6 @@ class MyTravelEvents:
         
         with con:
             con.execute(create_table_sql)
-
-        con.close()
 
 
     def get_all_events(self):
