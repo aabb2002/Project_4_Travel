@@ -31,7 +31,7 @@ def get_weather_forecast(destin_country, destin_city):
 
     # weather_total = get_current_weather_description(forecast_response)
 
-    weather_4_days = get_weather_4_days(forecast_response)
+    weather_4_days = get_weather_7_days(forecast_response)
 
     return weather_4_days
 
@@ -75,20 +75,7 @@ def get_first_place_lat_lon(places_location_response):
     longitude = places_location_response[0]['lon']
     return latitude, longitude
 
-# def get_current_weather_description(forecast_response):
-#     #print(forecast_response)
-#     parsed_weather_result = json.loads(forecast_response.text)
-#     print(json.dumps(parsed_weather_result, indent=4))
-#     current =parsed_weather_result["current"]
-#     for now in current:
-#         datenow = current["dt"]
-#         temperature = current["temp"]
-#         description = "Description: ", " ".join(current["weather"][2])
-        
-#         weather_total = f'Today is {datenow}. It is {temperature}F. {description}'     
-#         return weather_total
-
-def get_weather_4_days(forecast_response):
+def get_weather_7_days(forecast_response):
     # printing the text from the response 
     parsed_weather_result = json.loads(forecast_response.text)
     #print(json.dumps(parsed_weather_result, indent=4))
@@ -110,10 +97,8 @@ def get_weather_4_days(forecast_response):
 
                 short_description = description["description"]
         
-        weather_4_days = f'On {dt}: it should be {day_temp}F. Description: {short_description} '
-        
-        #description = "Description: ", " ".join(day["weather"]["description"])
-        #weather_4_days = f'{dateweather}: {temperature}. {description}'
-        
-        return weather_4_days
+        weather_7_days = f'On {dt}: it should be {day_temp}F. Description: {short_description} '
+        weather_total = list()
+        weather_total.append(weather_7_days)
+        return weather_total
  

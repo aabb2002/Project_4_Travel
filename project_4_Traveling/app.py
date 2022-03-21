@@ -38,7 +38,7 @@ def myTravelEventInfo():
         conversion_rate = get_conversion_rate(destin_currency)
         #forecast_response = get_weather_forecast(destin_country, destin_city)
         # weather_total = get_weather_forecast(destin_country, destin_city)
-        weather_4_days = get_weather_forecast(destin_country, destin_city)
+        weather_7_days = get_weather_forecast(destin_country, destin_city)
         conversion_rate_rounded = round(conversion_rate,2)
 
         return render_template(
@@ -51,7 +51,7 @@ def myTravelEventInfo():
             #forecast_response= forecast_response,
             #forecast = forecast,
             # weather_total = weather_total, 
-            weather_4_days = weather_4_days,
+            weather_7_days = weather_7_days,
             event_total= event_total)
 
     else:

@@ -94,9 +94,15 @@ def data_presentation_yelp(yelp_response):
             # time_start= time_start_raw.strip('T')
             address = "Address: "," ".join(event["location"]["display_address"])
             yelp_event_total_description=f'{name}|   {description} |   {time_start_raw} |    {address}'
-        return yelp_event_total_description
+            
+            yelp_3_events_descriptions =list()
+                        
+            yelp_3_events_descriptions.append(yelp_event_total_description)
+
+            return yelp_3_events_descriptions 
+
     else:
         return('Looks like there are no events for your dated listed on Yelp. Try a longer date range.')
     
-
+   
             
