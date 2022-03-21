@@ -9,7 +9,7 @@ class TestTravelDB(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        db = 'Tests/test_My_Travel_Events.sqlite'
+        travel_db = os.path.join('Tests', 'test_My_Travel_Events.sqlite')
         MyTravelEvents.instance = None
 
 
@@ -41,7 +41,7 @@ class TestTravelDB(TestCase):
         self.add_test_data()
         self.assertCountEqual([self.ev1, self.ev2, self.ev3], self.test_get_all_events())
 
-    def test_is_data_database(self):
+    def test_is_data_in_database(self):
         self.add_test_data()
         self.assertTrue(self.travel_db.exact_match(self.ev1))
         self.assertTrue(self.travel_db.exact_match(self.ev1))
