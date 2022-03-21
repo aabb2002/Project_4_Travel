@@ -1,5 +1,5 @@
 import sqlite3
-
+import os
 
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
@@ -25,6 +25,7 @@ class MyTravelEvents:
     Provides operations to create database add, display/query the database. need to have a command:
     "IF NOT EXISTS for tables and DB's." """
 
+    instance = None
 
     def __init__(self):
         create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text, current_temp small int)'
@@ -49,7 +50,7 @@ class MyTravelEvents:
             event = Event(r['event_name'], r['Date'], r['country'], r['city'], r['currency'], r['current_temp'])
             events.append(event)
 
-        con.close()            #  example book object event object.
+        con.close()            # event object.
         return events  
 
  
