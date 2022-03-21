@@ -14,12 +14,12 @@ class TestTravelDB(TestCase):
 
 
     def setup(self):
-        self.db = MyTravelEvents()     
-        self.clear_()
+        self.events = MyTravelEvents()     
+        self.clear_travel_db()
 
 
     def add_test_data(self):
-        self.clear_db()
+        self.clear_travel_db()
 
         self.ev1 = Event("Birthday", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
         self.ev2 = Event("Wedding", "2022-01-06 12:00:00" , "USA", "Minneapolis", "EUR", 88)
@@ -30,22 +30,35 @@ class TestTravelDB(TestCase):
         self.ev3.save()
 
 
-    def test_add_event(self):
-        self.add_test_data()
-        event = self.add.event("Birthday", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
-        event.save()
-        self.assertEqual(3, event)    
+    def clear_travel_db(self):
+        self.events.delete_all_events()
 
 
-    def test_get_all_events(self):
-        self.add_test_data()
-        self.assertCountEqual([self.ev1, self.ev2, self.ev3], self.test_get_all_events())
+    def test_add_event(self):       
+        ev = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
+        ev.save()
+        self.assertTrue(self.events.exact_match(ev))
+        self.assertEqual(1, ev)
 
-    def test_is_data_in_database(self):
-        self.add_test_data()
-        self.assertTrue(self.travel_db.exact_match(self.ev1))
-        self.assertTrue(self.travel_db.exact_match(self.ev1))
-        self.assertTrue(self.travel_db.exact_match(self.ev1))
+
+    # def test_add_event_to__database_with_data(self):
+    #     self.add_test_data()
+    #     ev0 = Event("Concert", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
+    #     ev0.save()
+    #     self.assertTrue(self.Events.exact_match(ev0))
+    #     self.assertEqual(1, ev0)            
+
+
+    # def test_get_all_events(self):
+    #     self.add_test_data()
+    #     self.assertCountEqual([self.ev1, self.ev2, self.ev3], self.test_get_all_events())
+
+
+    # def test_is_data_in_database(self):
+    #     self.add_test_data()
+    #     self.assertTrue(self.Events.exact_match(self.ev1))
+    #     self.assertTrue(self.Events.exact_match(self.ev1))
+    #     self.assertTrue(self.Events.exact_match(self.ev1))
 
    
     
