@@ -81,25 +81,34 @@ def data_presentation_yelp(yelp_response):
     #print(yelp_response.keys())
     events = parsed_yelp_result["events"]
     total = parsed_yelp_result["total"]
+    yelp_3_events_descriptions =list()
+    
     #print(total)
     if total != 0:
         for event in events:
+            #print(events)
             print(event)
+            #print(event[0].items())
+            #print(event[0].title())
             name=event["name"]
+            
             description=event["description"]
+            
             image_yelp = event["image_url"]
             time_start_raw =(event["time_start"])
+            
             # !TODO: get dt variable to show only the date of the event
             #dt = datetime.strptime(time_start_raw,'%Y-%m-%d')
             # time_start= time_start_raw.strip('T')
             address = "Address: "," ".join(event["location"]["display_address"])
-            yelp_event_total_description=f'{name}|   {description} |   {time_start_raw} |    {address}'
-            
-            yelp_3_events_descriptions =list()
+            yelp_event_total_description=f'{name},{description},{time_start_raw},{address}'
+            print(yelp_event_total_description)
+        
                         
-            yelp_3_events_descriptions.append(yelp_event_total_description)
-
-            return yelp_3_events_descriptions 
+        yelp_3_events_descriptions.append(yelp_event_total_description)
+        print(yelp_3_events_descriptions)
+            
+        return yelp_3_events_descriptions 
 
     else:
         return('Looks like there are no events for your dated listed on Yelp. Try a longer date range.')

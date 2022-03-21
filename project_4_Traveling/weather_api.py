@@ -81,7 +81,7 @@ def get_weather_7_days(forecast_response):
     #print(json.dumps(parsed_weather_result, indent=4))
     daily = parsed_weather_result["daily"]
     print(json.dumps(daily, indent=4))
-    
+    weather_total = list()
     for day in daily:
         dt = datetime.datetime.fromtimestamp(day["dt"]).strftime('%Y-%m-%d')
         # %H:%M:%S
@@ -98,7 +98,7 @@ def get_weather_7_days(forecast_response):
                 short_description = description["description"]
         
         weather_7_days = f'On {dt}: it should be {day_temp}F. Description: {short_description} '
-        weather_total = list()
+       
         weather_total.append(weather_7_days)
-        return weather_total
+    return weather_total
  
