@@ -1,8 +1,13 @@
+
 from urllib import response
 import requests
 import os
 import time
-from datetime import date, datetime
+from datetime import datetime 
+import datetime
+import json
+
+
 
 weather_url = 'https://api.openweathermap.org/data/2.5/onecall'
 geocoder_url = 'http://api.openweathermap.org/geo/1.0/direct'
@@ -22,11 +27,13 @@ def get_weather_forecast(destin_country, destin_city):
         'units': 'imperial'
     }
 
-    forecast_response = requests.get(weather_url, params=params).json()
+    forecast_response = requests.get(weather_url, params=params)
 
-    weather_total = get_weather_description(forecast_response)
+    # weather_total = get_current_weather_description(forecast_response)
 
-    return weather_total
+    weather_4_days = get_weather_7_days(forecast_response)
+
+    return weather_4_days
 
 
 def convert_location_to_lat_and_lon(destin_city, destin_country):
@@ -58,6 +65,7 @@ def generate_request_params_for_location(city, country):
 # todo mock this part 
 def make_geocode_request(geocoder_url, params):
     places_location_response = requests.get(geocoder_url, params=params).json()
+    
     return places_location_response
 
 
@@ -67,21 +75,30 @@ def get_first_place_lat_lon(places_location_response):
     longitude = places_location_response[0]['lon']
     return latitude, longitude
 
-def get_weather_description(forecast_response):
-    print(forecast_response)
-    weather= forecast_response['current']
-    print(weather)
-    #for key, value in weather.items():
-
-        #temperature= {value['temp']}
-        #wind =  {value['wind_speed']}
-        #inter = weather['weather']
-        #description = inter['0']['description']
+def get_weather_7_days(forecast_response):
+    # printing the text from the response 
+    parsed_weather_result = json.loads(forecast_response.text)
+    #print(json.dumps(parsed_weather_result, indent=4))
+    daily = parsed_weather_result["daily"]
+    print(json.dumps(daily, indent=4))
     
-    temperature = weather['temp']
-    wind = weather['wind_speed']    
-    weather_total = f'Currently it is {temperature}F. Wind speed is {wind} mph.'
-        #Can be described as {description}'
-        #TODO: 
+    for day in daily:
+        dt = datetime.datetime.fromtimestamp(day["dt"]).strftime('%Y-%m-%d')
+        # %H:%M:%S
+        temperature_spread=day["temp"]
+        for time,values in temperature_spread.items():
+            day_temp = temperature_spread["day"]
 
-    return weather_total
+        weather_descriptions = day["weather"]
+        print(weather_descriptions)
+        for description in weather_descriptions:
+            print(description)
+            for key, value in description.items():
+
+                short_description = description["description"]
+        
+        weather_7_days = f'On {dt}: it should be {day_temp}F. Description: {short_description} '
+        weather_total = list()
+        weather_total.append(weather_7_days)
+        return weather_total
+ 
