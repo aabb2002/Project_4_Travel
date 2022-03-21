@@ -14,12 +14,14 @@
 
         <p name="event_info">{{event_total}}</p><br>
         <!-- TODO: parse Yelp and find events by dates -->
-
+        {{event_total}}
         <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week</label>
 
-        <p name = "weather_today">Weather today in {{destin_city}}: {{weather_total}}</p><br> 
+        <!-- <p name = "weather_today">Weather today in {{destin_city}}:
+             {{weather_total}}</p><br>  -->
 
         <!-- TODO: WEATHER FOR THE WEEK -->
+        {{weather_4_days}}
 
         <label for="currency_converter">Currency converter: $1 USD =  {{conversion_rate}} {{destin_currency}}</label><br>
         
