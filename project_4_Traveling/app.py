@@ -71,5 +71,5 @@ def saved_travel_info():
     #, MyTravelEventDB.display_all_records)
 
 
-if __name__ == '__main__':
-    app.run(debug = True)
+# if __name__ == '__main__':
+#     app.run(debug = True)
