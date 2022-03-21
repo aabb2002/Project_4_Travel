@@ -9,12 +9,12 @@ class TestTravelDB(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        travel_db = os.path.join('Tests', 'test_My_Travel_Events.sqlite')
+        travel_db.db = os.path.join('Tests', 'test_My_Travel_Events.sqlite')
         MyTravelEvents.instance = None
 
 
-    def setup(self):
-        self.events = MyTravelEvents()     
+    def setUp(self):
+        self.MTE = MyTravelEvents()     
         self.clear_travel_db()
 
 
@@ -25,28 +25,28 @@ class TestTravelDB(TestCase):
         self.ev2 = Event("Wedding", "2022-01-06 12:00:00" , "USA", "Minneapolis", "EUR", 88)
         self.ev3 = Event("Beach Party", "2022-01-06 12:00:00" , "USA", "San Diego", "USD", 98)    
 
-        self.ev1.save()
-        self.ev2.save()
-        self.ev3.save()
+        self.ev1.save_event()
+        self.ev2.save_event()
+        self.ev3.save_event()
 
 
     def clear_travel_db(self):
-        self.events.delete_all_events()
+        self.MTE.delete_events_all()
 
 
-    def test_add_event(self):       
-        ev = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
-        ev.save()
-        self.assertTrue(self.events.exact_match(ev))
-        self.assertEqual(1, ev)
+    # def test_add_event(self):       
+    #     self.ev = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
+    #     self.ev.save_event()
+    #     self.assertTrue(self.MTE.exact_match(self.ev))
+    #     self.assertEqual(1, self.ev)
 
 
-    # def test_add_event_to__database_with_data(self):
-    #     self.add_test_data()
-    #     ev0 = Event("Concert", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
-    #     ev0.save()
-    #     self.assertTrue(self.Events.exact_match(ev0))
-    #     self.assertEqual(1, ev0)            
+    def test_add_event_to__database_with_data(self):
+        self.add_test_data()
+        self.ev0 = Event("Concert", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
+        self.ev0.save()
+        self.assertTrue(self.Events.exact_match(self.ev0))
+        self.assertEqual(1, self.ev0)            
 
 
     # def test_get_all_events(self):

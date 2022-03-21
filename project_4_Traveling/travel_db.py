@@ -25,7 +25,7 @@ class MyTravelEvents:
     Provides operations to create database add, display/query the database. need to have a command:
     "IF NOT EXISTS for tables and DB's." """
 
-    instance = None
+    #instance = None
 
     def __init__(self):
         create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text, currency text, current_temp small int)'
@@ -69,6 +69,15 @@ class MyTravelEvents:
             raise RecordError(f'Error - this event is already in the database. {event}') from e
         finally:
             con.close()
+
+
+    def delete_events_all(self):
+        '''deleting all the events from Events table'''
+        delete_all_sql = 'DELETE from Events'
+        with sqlite3.connect(db) as con:
+            deleted = con.execute(delete_all_sql)
+
+        con.close()
  
 
 class RecordError(Exception):
