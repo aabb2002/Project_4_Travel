@@ -78,7 +78,7 @@ class MyTravelEvents:
             deleted = con.execute(delete_all_sql)
 
         con.close()
- 
+
 
 class RecordError(Exception):
     pass
