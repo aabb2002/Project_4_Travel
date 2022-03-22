@@ -4,7 +4,7 @@ import os
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class Event:
-    def __int__(self, event_name, date, country, city, currency, current_temp):
+    def __init__(self, event_name, date, country, city, currency, current_temp):
         self.event_name = event_name
         self.date = date
         self.country = country
@@ -47,7 +47,7 @@ class MyTravelEvents:
         events = []
 
         for r in rows:
-            event = Event(r['event_name'], r['Date'], r['country'], r['city'], r['currency'], r['current_temp'])
+            event = Event(r['event_name'], r['event_date'], r['country'], r['city'], r['currency'], r['current_temp'])
             events.append(event)
 
         con.close()            # event object.
@@ -58,11 +58,11 @@ class MyTravelEvents:
         """save button - Adds event to database. Raises RecordError if 
         a event is already in the database (event_name unique.) TODO - do we need to think about case? """     
 
-        event_insert_sql = 'INSERT INTO Events (event_name, date, country, city, currency, current_temp VALUES (?, ?, ?, ?, ?, ?'      
+        event_insert_sql = 'INSERT INTO Events (event_name, event_date, country, city, currency, current_temp VALUES (?, ?, ?, ?, ?, ?)'      
                
         try: 
             with sqlite3.connect(db) as con:
-                res = con.execute(event_insert_sql, (event.event_name, event.date, event.country, event.city, event.currency, event.current_temp ) )     
+                res = con.execute(event_insert_sql, (event.event_name, event.event_date, event.country, event.city, event.currency, event.current_temp ) )     
                 new_id = res.lastrowid  # Get the ID of the new row in the table 
                 event.event_name = new_id  # Set this event                   
         except sqlite3.IntegrityError as e:
