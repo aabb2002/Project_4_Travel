@@ -1,5 +1,6 @@
 
 import sqlite3
+from typing import Counter
 import unittest
 from unittest import TestCase
 import os 
@@ -35,39 +36,60 @@ class TestTravelDB(TestCase):
         self.MTE.delete_events_all()
 
 
-    def test_add_event(self):     
+    def test_add_event(self):    
+        """test is not working, test adds one event and checks database for event added to database""" 
         self.clear_travel_db () 
         self.ev = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
         self.ev.save_event()
-        self.assertTrue([self.ev], self.MTE.get_all_events())
-        #self.assertEqual([self.ev], self.MTE.get_all_events())
-       
+        result = self.ev
+        #self.assertEqual(result, self.MTE.get_all_events())
+        self.assertEqual(result, self.MTE.get_all_events())
 
-    def test_add_event_to_database_with_data(self):
-        self.add_test_data()
-        self.ev0 = Event("Concert", "2022-04-15 12:00:00", "USA", "Minneapolis", "EUR", 78)
-        self.ev0.save_event()
-        self.assertTrue(self.ev0, self.MTE.get_all_events())
-        #self.assertCountEqual(4, self.MTE.get_all_events())            
+    def test_add_event_duplicate(self):
+        """test is working"""
+        self.clear_travel_db () 
+        self.ev = Event("Hockey Day", "2022-01-15 12:00:00" , "USA", "Minneapolis", "USD", 25)   
+        self.ev.save_event()
+        with self.assertRaises(RecordError):
+            self.dup = Event("Hockey Day", "2022-01-15 12:00:00" , "USA", "Minneapolis", "USD", 25) 
+            self.dup.save_event()
 
 
-    # def test_get_all_events(self):
-    #     """test asserts to True but not to equal"""
+    # def test_add_event_to_database_with_data(self):
+    #     """test is not working, test adds test date events plu one event and checks database for events added"""   
     #     self.add_test_data()
-    #     self.assertTrue([self.ev1, self.ev2, self.ev3], self.MTE.get_all_events())
+    #     self.ev0 = Event("Concert", "2022-04-15 12:00:00", "USA", "Minneapolis", "EUR", 78)
+    #     self.ev0.save_event()
+        
+    #     self.assertEqual([self.ev1, self.ev2, self.ev3, self.ev0], self.MTE.get_all_events())
+    #     #self.assertCountEqual(4, self.MTE.get_all_events())            
+
+
+    def test_get_all_events(self):
+        """test not working, asserts to True but not to equal"""
+        self.clear_travel_db
+        self.add_test_data()
+        self.assertEqual([self.ev1, self.ev2, self.ev3], self.MTE.get_all_events())
 
 
     def test_is_data_in_database(self):
-        """test working to add data and find data is in the database"""
+        """test working to add data and finds data is in the database"""
         self.add_test_data()
         self.assertTrue(self.MTE.get_all_events())
         #self.clear_travel_db()
 
 
     def test_delete_all_events(self):
+        """tests working, it test that delete_events is deleting data."""
         self.add_test_data()
         self.MTE.delete_events_all()
-        self.assertNotIn(0, self.MTE.get_all_events())        
+        self.assertEqual([], self.MTE.get_all_events())   
+
+    # def test_add_event_no_event(self):
+    #     """not raising error"""
+    #     self.add_test_data
+    #     with self.assertRaises(RecordError):
+    #         MyTravelEvents.add_event(1, None)
 
 
        
