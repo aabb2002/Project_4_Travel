@@ -43,7 +43,7 @@ class TestTravelDB(TestCase):
 
     def test_add_event_to__database_with_data(self):
         self.add_test_data()
-        self.ev0 = Event("Concert", "2022-04-15 12:00:00" , "USA", "Minneapolis", "EUR", 78)
+        self.ev0 = Event("Concert", "2022-04-15 12:00:00", "USA", "Minneapolis", "EUR", 78)
         self.ev0.save()
         self.assertTrue(self.Events.exact_match(self.ev0))
         self.assertEqual(1, self.ev0)            
