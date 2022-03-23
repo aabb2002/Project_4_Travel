@@ -23,13 +23,24 @@
         <a href = "saved_destinations.html">Go to saved destination page</a><br>
         <a href = "homepage.html">Go to homepage</a>
         
-        <form method="GET">
-            <button type="save" name="save_button" value="Save">save</button>
+        <!-- Anything that modifies the DB should be a POST request -->
+        <form method="POST" action="/save">
+            <!-- hidden inputs to carry the data about this destination back to the server when you click save -->
+            <input type="hidden" name="city" value ="{{destin_city}}">
+            <input type="hidden" name="country" value ="{{destin_country}}">
+            <!-- plus inputs for the other data. The values typically need to be strings or ints.-->
+            <button type="submit" name="save_button" value="Save">save</button>
         </form>
-        <form method="GET" action="/project_4_Traveling/Templates/saved_destinations.html">
-            <button type="save" name="save_button" value="Show_Saved">show my saved events </button>
 
-        </form>
+
+        <!-- This can be a regular a element. If you want a button, wrap the a element around a button -->
+        <a href="show_saved">
+            <button>Show saved destnations</button>
+        </a>
+
+        <!-- <form method="GET" action="/project_4_Traveling/Templates/saved_destinations.html">
+            <button type="save" name="save_button" value="Show_Saved">show my saved events </button>
+        </form> -->
 </body>
 
 </html>
