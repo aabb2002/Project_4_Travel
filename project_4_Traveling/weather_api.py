@@ -80,7 +80,7 @@ def get_weather_7_days(forecast_response):
     parsed_weather_result = json.loads(forecast_response.text)
     #print(json.dumps(parsed_weather_result, indent=4))
     daily = parsed_weather_result["daily"]
-    print(json.dumps(daily, indent=4))
+    #print(json.dumps(daily, indent=4))
     weather_total = list()
     for day in daily:
         dt = datetime.datetime.fromtimestamp(day["dt"]).strftime('%Y-%m-%d')
@@ -90,9 +90,9 @@ def get_weather_7_days(forecast_response):
             day_temp = temperature_spread["day"]
 
         weather_descriptions = day["weather"]
-        print(weather_descriptions)
+        #print(weather_descriptions)
         for description in weather_descriptions:
-            print(description)
+            #print(description)
             for key, value in description.items():
 
                 short_description = description["description"]

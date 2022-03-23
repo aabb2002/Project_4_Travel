@@ -7,30 +7,8 @@
     <title>Saved destinations</title>
 </head>
 <body>
-    <form method = "GET" action = "saved"></form>
-    <!-- conversion rate
-    event name 
-    event date
-    city country -->
-    <!-- <table border = 1>
-        <thead> 
-            <!-- table headers 
-           <td>Country: </td>
-           <td>City: </td>
-           <td>Event id: </td>
-           <td>Event name: </td>
-           <td>Conversion: {{}}{{}}[TODO: insert currency variables]</td>
-        </thead>
-        
-        {% for row in rows %}
-           <tr>
-              <td>{{row["destin_country"]}}</td>
-              <td>{{row["destin_city"]}}</td>
-              <td> {{row["destin_yelp_event_id"]}}</td>
-              <td>{{row['destin_yelp_event_name']}}</td>	
-           </tr>
-        {% endfor %} 
-    </table>-->
+    {{all_events}}
+    
     <a href = "/homepage.html">Go back to home page</a>
 </body>
 </html>

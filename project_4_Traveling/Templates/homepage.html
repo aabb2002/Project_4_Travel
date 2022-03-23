@@ -4,41 +4,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyTravelEvents</title>
+    <title>{% block title %} {% endblock %}- My Travel Events</title>tle>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>TODO: complete this page</h1>
+
+
+    <h2>Welcome to our page, where you can learn more about a place your visiting. Ideally meant for trips happening within 7 days, we will find events at your destination along with the weather for the region and currency exchange rate. Thank you for using pur app! </h2>
+
+
     <form method = "GET" action = "getuserinfo">
+
+
+        <div>
         <h4 for="destination_general"> What's your destination? </h4>
         <label for="destin_country">Country: </label>
         <input name = "destin_country" type = "text" id = "destin_country" required><br>
 
-
         <label for="destin_city">City: </label>
-        <input name = "destin_city" type = "text" id = "destin_city" required><br>
+        <input name = "destin_city" type = "text" id = "destin_city" required>
+        </div>
 
 
+        <div>
         <label for="destin_dates">When do you want to go?</label><br>
         <label for="destin_from_date">From: <input name = "destin_from_date" type = "date" id = "destin_from_date" required></label><br>
+
         <label for="destin_to_date">To: <input name = "destin_to_date" type = "date" id = "destin_to_date" required></label><br>
+        </div>
 
 
+        <div>
         <label for="currency_converter_general">Our base currency is US dollar ($). You will see an equivalent of the US dollar in the currency you choose.</label><br>
         <label for="destin_currency">Choose currency (please enter an abbreviation, like USD/EUR): </label><input name = "destin_currency" type = "text" id=" destin_currency" required> 
+        
         <p>If you don't know the abbreviation for the currency of your choice, see the link below</p>
         <a href = "https://www.easymarkets.com/int/learn-centre/discover-trading/currency-acronyms-and-abbreviations/">List of currency abbreviations</a>
+        </div>
 
-
+        <div>
         <button type = "submit">Go!</button>
-        
-        <!-- TODO: how to link the saving event to adding info to the db -->
-        <button type = "save">Save</button> 
-        
+        </div>
 
 
+        <div>
         <a href = "saved_destinations.html">Go back to saved destination page</a>
-    
+        </div>
     </form>
 
    
