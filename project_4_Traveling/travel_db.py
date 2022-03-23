@@ -58,7 +58,7 @@ class MyTravelEvents:
         """save button - Adds event to database. Raises RecordError if 
         a event is already in the database (event_name unique.) TODO - do we need to think about case? """     
 
-        event_insert_sql = 'INSERT INTO Events (event_name, event_date, country, city, currency, current_temp) VALUES (?, ?, ?, ? )'      
+        event_insert_sql = 'INSERT INTO Events (event_name, event_date, country, city) VALUES (?, ?, ?, ? )'      
                
         try: 
             with sqlite3.connect(db) as con:
