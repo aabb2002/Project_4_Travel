@@ -12,7 +12,8 @@
 
         <label for="event_info">Information regarding your Yelp events for the dates entered:</label><br>
 
-        <p name="event_info">{{event_total}}</p><br>
+        <p name="first_event_info">{{yelp_3_events_descriptions}}</p><br><br>
+
         <!-- TODO: parse Yelp and find events by dates -->
         <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week: </label>
         <p name="weather_data">{{weather_7_days}}</p><br>
@@ -21,6 +22,14 @@
         
         <a href = "saved_destinations.html">Go to saved destination page</a><br>
         <a href = "homepage.html">Go to homepage</a>
+        
+        <form method="GET">
+            <button type="save" name="save_button" value="Save">save</button>
+        </form>
+        <form method="GET" action="/project_4_Traveling/Templates/saved_destinations.html">
+            <button type="save" name="save_button" value="Show_Saved">show my saved events </button>
+
+        </form>
 </body>
 
 </html>
