@@ -6,6 +6,7 @@ import time
 from datetime import datetime 
 import datetime
 import json
+from currency_api import Request_Exception
 
 
 
@@ -54,12 +55,16 @@ def convert_location_to_lat_and_lon(destin_city, destin_country):
 def generate_request_params_for_location(city, country):
     # todo validate data? - 
     # 1. generating parameters dictionary 
-    params = {
-        'q' : f'{city},{country}', 
-        'appid': weather_key,   
-        'limit': 1
-    }
-    return params
+    if (city == None) or (country == None):
+        params = None
+        return params
+    else:
+        params = {
+            'q' : f'{city},{country}', 
+            'appid': weather_key,   
+            'limit': 1
+        }
+        return params
 
 
 # todo mock this part 
