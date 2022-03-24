@@ -11,22 +11,35 @@
         <label> Information for {{destin_city}}, {{destin_country}}</label> <br>
 
         <label for="event_info">Information regarding your Yelp events for the dates entered:</label><br>
-
-        <p name="first_event_info">{{yelp_3_events_descriptions}}</p><br><br>
-
-        <!-- TODO: parse Yelp and find events by dates -->
+        {%if yelp_3_events_descriptions is defined and yelp_3_events_descriptions|length>0%}
+            {% for event in yelp_3_events_descriptions%}
+                {{event}}<br>
+            {% endfor %}
+        {%else:%}
+            <p>Looks like there are no events for your dated listed on Yelp. Try a longer date range.</p>
+        {%endif%}
+        <br>
         <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week: </label>
-        <p name="weather_data">{{weather_7_days}}</p><br>
+        <br>
+        {% for weather in weather_7_days%}
+            {{weather}}<br>
+        {% endfor %}
+        <br>
 
         <label for="currency_converter">Currency converter: $1 USD =  {{conversion_rate}} {{destin_currency}}</label><br>
-        
+        <br>
         <a href = "saved_destinations.html">Go to saved destination page</a><br>
         <a href = "homepage.html">Go to homepage</a>
-        
-        <form method="GET">
+        <br><br><br>
+        <form method="POST" action="getuserinfo">
+
+            <input type="hidden" name="city" value ="{{destin_city}}">
+            <input type="hidden" name="country" value ="{{destin_country}}">
+
+
             <button type="save" name="save_button" value="Save">save</button>
-        </form>
-        <form method="GET" action="/project_4_Traveling/Templates/saved_destinations.html">
+        
+
             <button type="save" name="save_button" value="Show_Saved">show my saved events </button>
 
         </form>
