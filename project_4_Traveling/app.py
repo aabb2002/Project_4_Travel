@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, request,redirect
 
+
 from currency_api import get_conversion_rate
 
 from weather_api import get_weather_forecast
@@ -65,20 +66,22 @@ def saveuserinfo():
     #form_data = request.form 
     country = request.form.get('country')
     city = request.form.get('city')
-    event = request.form.get('event')
-    destin_from_date = request.form.get('destin_from_date')
-    destin_to_date = request.form.get('destin_to_date')
-    print(city, country,event)
-    var = Event(country,city,event,destin_from_date, destin_to_date)
-    var.save_event()
-    return redirect('/show_saved')
+    event_name = request.form.get('event')
+    #destin_from_date = request.form.get('destin_from_date')
+    #destin_to_date = request.form.get('destin_to_date')
+    print(city, country,event_name)
+    var = Event(event_name,country,city)
+    saved = var.save_event()
+    #return redirect('/show_saved')
+    return render_template('saved_destinations.html', saved=saved)
 
 @app.route('/show_saved')
 def show_saved_destinations():
     # get destinations from the database 
-    destinations = ' '
-    MyTravelEvents.get_all_events=destinations     
-    return render_template('saved_destinations.html', destinations=destinations)
+    saved = MyTravelEvents()
+    show_events = saved.get_all_events()
+
+    return render_template('saved_destinations.html', show_events = show_events)
     
     
 
