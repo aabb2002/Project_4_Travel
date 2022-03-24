@@ -36,14 +36,30 @@ class TestTravelDB(TestCase):
         self.MTE.delete_events_all()
 
 
-    # def test_add_event(self):    
-    #     """test is not working, test adds one event and checks database for event added to database""" 
-    #     self.clear_travel_db () 
-    #     self.ev = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis")
-    #     self.ev.save_event()
-    #     result = self.ev
-    #     #self.assertEqual(result, self.MTE.get_all_events())
-    #     self.assertEqual(result, self.MTE.get_all_events())
+    def test_add_event(self):    
+        """test is not working, test adds one event and checks database for event added to database""" 
+        self.clear_travel_db () 
+
+        # create just for this specfic test, create as a local variable, no self
+        new_event = Event("Fun Day", "2022-04-15 12:00:00" , "USA", "Minneapolis")
+        new_event.save_event()
+
+        expected_list_from_db = self.MTE.get_all_events()
+        self.assertEqual(1, len(expected_list_from_db))   # expect one Event 
+
+        saved_event = expected_list_from_db[0]  # now can expect to read the first item from the list since it has one element 
+
+        print("saved event from db", saved_event)
+        print("new event", new_event)
+        self.assertEqual(saved_event.event_date, new_event.event_date)  # event created here is the same as the event in the database
+        self.assertEqual(saved_event.country, new_event.country)  # event created here is the same as the event in the database
+        self.assertEqual(saved_event.city, new_event.city)  # event created here is the same as the event in the database
+        self.assertEqual(saved_event.event_name, new_event.event_name)  # event created here is the same as the event in the database
+        
+        self.assertEqual(result, self.MTE.get_all_events())  # that would pass with __eq__ implemented
+        # self.assertEqual(result, self.MTE.get_all_events())
+
+
 
     def test_add_event_duplicate(self):
         """test is working"""

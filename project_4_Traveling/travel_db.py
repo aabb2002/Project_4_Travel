@@ -11,9 +11,20 @@ class Event:
         self.country = country
         self.city = city
 
-
-
         self.myTravelEvent = MyTravelEvents()
+
+
+    def __str__(self):
+        return f"{self.event_name=} {self.event_date=} {self.city=} {self.country=}"
+
+
+    def __eq__(self, other):
+        return self.event_name == other.event_name and self.event_date == other.event_date # etc. 
+
+
+    def __ne__(self, other):
+        pass  # todo 
+
 
 
     def save_event(self):
