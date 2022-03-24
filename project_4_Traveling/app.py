@@ -1,7 +1,6 @@
 # Daria's portion
-from argparse import Action
-from multiprocessing import Event
-from flask import Flask, render_template, request
+
+from flask import Flask, render_template, request,redirect
 
 from currency_api import get_conversion_rate
 
@@ -38,7 +37,8 @@ def myTravelEventInfo():
     
 
     if (destin_country, destin_city, destin_from_date, destin_to_date, destin_currency):
-        yelp_3_events_descriptions  = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
+        yelp_3_events_descriptions = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
+        #names_event = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
         conversion_rate = get_conversion_rate(destin_currency)
         weather_7_days = get_weather_forecast(destin_country, destin_city)
         conversion_rate_rounded = round(conversion_rate,2)
@@ -48,34 +48,37 @@ def myTravelEventInfo():
             'destination_info.html', 
             destin_city=destin_city,
             destin_country=destin_country,
+            destin_from_date=destin_from_date,
+            destin_to_date=destin_to_date,
             destin_currency = destin_currency,
             conversion_rate=conversion_rate_rounded, 
             weather_7_days = weather_7_days,
             yelp_3_events_descriptions=yelp_3_events_descriptions)
+            #names_event = names_event)
     
 
     else:
-        return "error"
+        return "Please fill out all the fields"
 
-@app.route('/saveuserinfo')
-def SaveUserInfo():
+@app.route('/saveuserinfo',methods=['POST'])
+def saveuserinfo():
+    #form_data = request.form 
+    country = request.form.get('country')
+    city = request.form.get('city')
+    event = request.form.get('event')
+    destin_from_date = request.form.get('destin_from_date')
+    destin_to_date = request.form.get('destin_to_date')
+    print(city, country,event)
+    var = Event(country,city,event,destin_from_date, destin_to_date)
+    var.save_event()
+    return redirect('/show_saved')
 
-        #destin_country = request.form['destin_country']
-        #request.args.get('destin_country')
-    if  request.form.get['save_button']== 'Save':
-        #year = Event.country(country)
-        #print(year)
-        Event.country = request.form.get('city')
-                #destin_city= Event.c ity
-        Event.save_event()
-                #yelp_3_events_descriptions= Event.name
-        return 'Success!'
-                        
-                    #pass 
-    elif request.form.get['saved_button'] == 'Show saved':
-        all_events = MyTravelEvents.get_all_events            
-        return render_template('saved_destinations.html', all_events=all_events)
-
+@app.route('/show_saved')
+def show_saved_destinations():
+    # get destinations from the database 
+    destinations = ' '
+    MyTravelEvents.get_all_events=destinations     
+    return render_template('saved_destinations.html', destinations=destinations)
     
     
 

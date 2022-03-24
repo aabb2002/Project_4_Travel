@@ -26,9 +26,10 @@ def get_travel_info(destin_country, destin_city,destin_from_date, destin_to_date
 
     yelp_3_events_descriptions = data_presentation_yelp(yelp_response)
 
-
+    
 
     return yelp_3_events_descriptions
+    #,names_event
 def generate_headers():
     headers = {
         'Authorization': 'Bearer ' + yelp_key 
@@ -83,7 +84,7 @@ def data_presentation_yelp(yelp_response):
     events = parsed_yelp_result["events"]
     total = parsed_yelp_result["total"]
     yelp_3_events_descriptions =list()
-    
+    #names_event=list()
     #print(total)
     if total != 0:
         for event in events:
@@ -103,13 +104,14 @@ def data_presentation_yelp(yelp_response):
             yelp_event_total_description=f'{name}. At {date}. Address: {address}'
             #print(yelp_event_total_description)
         
-                      
+            #names_event.append(name)
             yelp_3_events_descriptions.append(yelp_event_total_description)
 
         #print(yelp_3_events_descriptions)
         #print(names)
   
         return yelp_3_events_descriptions
+        #,names_event
     else:
         return('')
     

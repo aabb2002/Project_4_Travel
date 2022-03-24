@@ -4,13 +4,15 @@ import os
 db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class Event:
-    def __init__(self, event_name, event_date, country, city):
-        self.event_name = event_name
-        self.event_date = event_date
+    def __init__(self, country, city,event_name, destin_from_date, destin_to_date):
+        
+        #self.event_date = event_date
         self.country = country
         self.city = city
+        self.event_name = event_name
 
-
+        self.destin_from_date = destin_from_date
+        self.destin_to_date = destin_to_date
 
         self.myTravelEvent = MyTravelEvents()
 
@@ -29,7 +31,7 @@ class MyTravelEvents:
     #instance = None
 
     def __init__(self):
-        create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text)'
+        create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, destin_from_date DATE, destin_to_date DATE, country text, city text)'
                                  
         con = sqlite3.connect(db)
         
@@ -48,7 +50,7 @@ class MyTravelEvents:
         events = []
 
         for r in rows:
-            event = Event(r['event_name'], r['event_date'], r['country'], r['city'])
+            event = Event(r['event_name'], r['destin_from_date'], r['destin_to_date'], r['country'], r['city'])
             events.append(event)
 
         con.close()            # event object.
@@ -59,11 +61,11 @@ class MyTravelEvents:
         """save button - Adds event to database. Raises RecordError if 
         a event is already in the database (event_name unique.) TODO - do we need to think about case? """     
 
-        event_insert_sql = 'INSERT INTO Events (event_name, event_date, country, city) VALUES (?, ?, ?, ? )'      
+        event_insert_sql = 'INSERT INTO Events (event_name, destin_from_date,destin_to_date, country, city) VALUES (?, ?, ?, ?, ? )'      
                
         try: 
             with sqlite3.connect(db) as con:
-                res = con.execute( event_insert_sql, (event.event_name, event.event_date, event.country, event.city) )     
+                res = con.execute( event_insert_sql, (event.event_name, event.destin_from_date,event.destin_to_date, event.country, event.city) )     
                 new_id = res.lastrowid  # Get the ID of the new row in the table 
                 event.event_name = new_id  # Set this event                   
         except sqlite3.IntegrityError as e:
