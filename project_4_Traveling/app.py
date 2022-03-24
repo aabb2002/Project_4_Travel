@@ -2,6 +2,7 @@
 from argparse import Action
 from multiprocessing import Event
 from flask import Flask, render_template, request
+
 from currency_api import get_conversion_rate
 
 from weather_api import get_weather_forecast
@@ -18,7 +19,7 @@ app.config["DEBUG"] = True
 def homepage():
     return render_template('homepage.html')
 
-@app.route('/getuserinfo', methods=['GET','POST']) 
+@app.route('/getuserinfo') 
 def myTravelEventInfo():
 
     print(request.args)
@@ -52,25 +53,29 @@ def myTravelEventInfo():
             weather_7_days = weather_7_days,
             yelp_3_events_descriptions=yelp_3_events_descriptions)
     
-    if request.method == 'POST':
-        destin_country = request.form['destin_country']
-        if request.form['save_button'] == 'SAVE':
 
-            destin_country=Event.country
-                #destin_city= Event.c ity
-            Event.save_event()
-                #yelp_3_events_descriptions= Event.name
-            return 'Success!'
-                        
-                    #pass 
-        elif request.form['Show_Saved'] == 'SHOW SAVED':
-            all_events = MyTravelEvents.get_all_events            
-            return render_template('saved_destinations.html', all_events=all_events)
     else:
         return "error"
 
-            # @app.route('/saveuserinfo')
-            # def save(destin_country,destin_city,names,addresses,dates,descriptions):
+@app.route('/saveuserinfo')
+def SaveUserInfo():
+
+        #destin_country = request.form['destin_country']
+        #request.args.get('destin_country')
+    if  request.form.get['save_button']== 'Save':
+        #year = Event.country(country)
+        #print(year)
+        Event.country = request.form.get('city')
+                #destin_city= Event.c ity
+        Event.save_event()
+                #yelp_3_events_descriptions= Event.name
+        return 'Success!'
+                        
+                    #pass 
+    elif request.form.get['saved_button'] == 'Show saved':
+        all_events = MyTravelEvents.get_all_events            
+        return render_template('saved_destinations.html', all_events=all_events)
+
     
     
 
