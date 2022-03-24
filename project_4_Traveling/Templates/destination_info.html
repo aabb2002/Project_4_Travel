@@ -31,7 +31,12 @@
         <a href = "saved_destinations.html">Go to saved destination page</a><br>
         <a href = "homepage.html">Go to homepage</a>
         <br><br><br>
-        <form method="GET">
+        <form method="POST" action="getuserinfo">
+
+            <input type="hidden" name="city" value ="{{destin_city}}">
+            <input type="hidden" name="country" value ="{{destin_country}}">
+
+
             <button type="save" name="save_button" value="Save">save</button>
         
 

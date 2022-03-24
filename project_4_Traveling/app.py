@@ -18,7 +18,7 @@ app.config["DEBUG"] = True
 def homepage():
     return render_template('homepage.html')
 
-@app.route('/getuserinfo') 
+@app.route('/getuserinfo', methods=['GET','POST']) 
 def myTravelEventInfo():
 
     print(request.args)
@@ -51,26 +51,28 @@ def myTravelEventInfo():
             conversion_rate=conversion_rate_rounded, 
             weather_7_days = weather_7_days,
             yelp_3_events_descriptions=yelp_3_events_descriptions)
+    
+    if request.method == 'POST':
+        destin_country = request.form['destin_country']
+        if request.form['save_button'] == 'SAVE':
+
+            destin_country=Event.country
+                #destin_city= Event.c ity
+            Event.save_event()
+                #yelp_3_events_descriptions= Event.name
+            return 'Success!'
+                        
+                    #pass 
+        elif request.form['Show_Saved'] == 'SHOW SAVED':
+            all_events = MyTravelEvents.get_all_events            
+            return render_template('saved_destinations.html', all_events=all_events)
     else:
         return "error"
 
-    def save(destin_country,destin_city,names,addresses,dates,descriptions):
-        all_events = MyTravelEvents.get_all_events
-        if request.method == 'GET':
-            if request.form['save_button'] == 'SAVE':
-
-                    destin_country=Event.country
-                    destin_city= Event.city
-                    yelp_3_events_descriptions[0]= Event.name
-                    date= Event.date
-                    #pass 
-            elif request.form['Show_Saved'] == 'SHOW SAVED':
-                    
-                    return render_template('saved_destinations.html', all_events=all_events)
-                    pass 
-        else:
-                pass 
-
+            # @app.route('/saveuserinfo')
+            # def save(destin_country,destin_city,names,addresses,dates,descriptions):
+    
+    
 
 
 

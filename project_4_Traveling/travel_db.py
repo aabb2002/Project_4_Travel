@@ -5,8 +5,8 @@ db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class Event:
     def __int__(self, event_name, date, country, city, currency, current_temp):
-        self.event_name = event_name
-        self.date = date
+        #self.event_name = event_name
+        #self.date = date
         self.country = country
         self.city = city
         #self.currency = currency
