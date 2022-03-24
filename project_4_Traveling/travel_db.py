@@ -6,9 +6,11 @@ db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 class Event:
     def __init__(self, event_name, event_date, country, city):
         self.event_name = event_name
+
         self.event_date = event_date
         self.country = country
         self.city = city
+
 
 
         self.myTravelEvent = MyTravelEvents()

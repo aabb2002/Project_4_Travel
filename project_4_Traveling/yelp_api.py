@@ -4,8 +4,9 @@ from wsgiref import headers
 import requests
 import os
 import time
-from datetime import date
+from datetime import date,datetime
 import datetime
+import json
 
 yelp_url = 'https://api.yelp.com/v3/events'
 yelp_key = os.environ.get('YELP_API_KEY')
@@ -23,10 +24,11 @@ def get_travel_info(destin_country, destin_city,destin_from_date, destin_to_date
 
     yelp_response = make_yelp_request(yelp_url, headers, params)
 
-    yelp_event_total_description = data_presentation_yelp(yelp_response)
+    yelp_3_events_descriptions = data_presentation_yelp(yelp_response)
 
-    return yelp_event_total_description
 
+
+    return yelp_3_events_descriptions
 def generate_headers():
     headers = {
         'Authorization': 'Bearer ' + yelp_key 
@@ -43,7 +45,9 @@ def generate_params(destin_city, destin_country,unix_from_time,unix_to_time):
     return params
 
 def make_yelp_request(yelp_url, headers, params):
-    yelp_response = requests.get(yelp_url,headers=headers, params=params).json()
+    yelp_response = requests.get(yelp_url,headers=headers, params=params)
+    # proceed only if the status code is 200
+    print('The status code is {}'.format(yelp_response.status_code))
     return yelp_response
 
 def generate_unix_from_date(destin_from_date):
@@ -71,15 +75,45 @@ def generate_unix_to_date(destin_to_date):
     return unix_to_time
 
 def data_presentation_yelp(yelp_response):
+    # printing the text from the response 
+    parsed_yelp_result = json.loads(yelp_response.text)
+    #print(json.dumps(parsed_yelp_result, indent=4))
     #print(yelp_response)
     #print(yelp_response.keys())
+    events = parsed_yelp_result["events"]
+    total = parsed_yelp_result["total"]
+    yelp_3_events_descriptions =list()
+    
+    #print(total)
+    if total != 0:
+        for event in events:
+            #print(events)
+            #print(event)
+            #print(event[0].items())
+            #print(event[0].title())
+            name=event["name"]
+            
+            #description=event["description"]
+            
+            image_yelp = event["image_url"]
+            time_start_raw =(event["time_start"])
+            
+            # !TODO: get dt variable to show only the date of the event
+            #dt = datetime.strptime(time_start_raw,'%Y-%m-%d')
+            # time_start= time_start_raw.strip('T')
+            address = " ".join(event["location"]["display_address"])
+            yelp_event_total_description=f'{name}. At {time_start_raw}, address: {address}'
+            #print(yelp_event_total_description)
+        
+                        
+            yelp_3_events_descriptions.append(yelp_event_total_description)
 
-    for event,details in yelp_response.items():
-        #print(details)
-        for key,value in enumerate(details):
-            event_name = (f"Event name: {value['name']}") 
-            event_description = (f"Description: {value['description']}")
-            yelp_event_total_description = f"{event_name},{ event_description}"
+        #print(yelp_3_events_descriptions)
+            
+        return yelp_3_events_descriptions, name
+
+    else:
+        return('Looks like there are no events for your dated listed on Yelp. Try a longer date range.')
     
-            return yelp_event_total_description
-    
+   
+            
