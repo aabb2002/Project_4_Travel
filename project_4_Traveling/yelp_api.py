@@ -47,8 +47,11 @@ def generate_params(destin_city, destin_country,unix_from_time,unix_to_time):
 def make_yelp_request(yelp_url, headers, params):
     yelp_response = requests.get(yelp_url,headers=headers, params=params)
     # proceed only if the status code is 200
-    print('The status code is {}'.format(yelp_response.status_code))
+    print_yelp_status(yelp_response)
     return yelp_response
+
+def print_yelp_status(response):
+    print('The status code is {}'.format(response.status_code))
 
 def generate_unix_from_date(destin_from_date):
     from_dates=destin_from_date.split("-")
