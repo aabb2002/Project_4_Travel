@@ -7,6 +7,7 @@ import time
 from datetime import date,datetime
 import datetime
 import json
+from currency_api import Request_Exception
 
 yelp_url = 'https://api.yelp.com/v3/events'
 yelp_key = os.environ.get('YELP_API_KEY')
@@ -26,9 +27,8 @@ def get_travel_info(destin_country, destin_city,destin_from_date, destin_to_date
 
     yelp_3_events_descriptions = data_presentation_yelp(yelp_response)
 
-
-
     return yelp_3_events_descriptions
+
 def generate_headers():
     headers = {
         'Authorization': 'Bearer ' + yelp_key 
@@ -45,10 +45,14 @@ def generate_params(destin_city, destin_country,unix_from_time,unix_to_time):
     return params
 
 def make_yelp_request(yelp_url, headers, params):
-    yelp_response = requests.get(yelp_url,headers=headers, params=params)
+    try:
+        yelp_response = requests.get(yelp_url,headers=headers, params=params)
     # proceed only if the status code is 200
-    print_yelp_status(yelp_response)
-    return yelp_response
+        print_yelp_status(yelp_response)
+        return yelp_response
+    except Exception as ex:
+        print(ex)
+        raise Request_Exception('Error when making request')
 
 def print_yelp_status(response):
     print('The status code is {}'.format(response.status_code))
