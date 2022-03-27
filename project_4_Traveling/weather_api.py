@@ -11,7 +11,7 @@ from currency_api import Request_Exception
 
 
 weather_url = 'https://api.openweathermap.org/data/2.5/onecall'
-geocoder_url = 'http://api.penweathermap.org/geo/1.0/direct'
+geocoder_url = 'http://api.openweathermap.org/geo/1.0/direct'
 
 weather_key = os.environ.get('WEATHER_API_KEY')
 
