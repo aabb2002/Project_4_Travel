@@ -20,7 +20,7 @@ def get_conversion_rate(destin_currency):
 
 
 def generate_request_params_for_currency(destin_currency):
-
+    #we have USD as base currency
     params = {
         'apiKey' : currency_convertor_key,
         'q': "USD_" + destin_currency,
