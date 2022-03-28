@@ -27,8 +27,12 @@ def get_weather_forecast(destin_country, destin_city):
         'exclude': 'minutely, hourly, alerts',
         'units': 'imperial'
     }
+    
+    try:
+        forecast_response = requests.get(weather_url, params=params)
+    except Exception as ex:
+        print(ex)
 
-    forecast_response = requests.get(weather_url, params=params)
 
     # weather_total = get_current_weather_description(forecast_response)
 
@@ -53,25 +57,23 @@ def convert_location_to_lat_and_lon(destin_city, destin_country):
 
 
 def generate_request_params_for_location(city, country):
-    # todo validate data? - 
-    # 1. generating parameters dictionary 
-    if (city == None) or (country == None):
-        params = None
-        return params
-    else:
-        params = {
-            'q' : f'{city},{country}', 
-            'appid': weather_key,   
-            'limit': 1
-        }
-        return params
+
+    params = {
+        'q' : f'{city},{country}', 
+        'appid': weather_key,   
+        'limit': 1
+    }
+    return params
 
 
 # todo mock this part 
 def make_geocode_request(geocoder_url, params):
-    places_location_response = requests.get(geocoder_url, params=params).json()
-    
-    return places_location_response
+    try:
+        places_location_response = requests.get(geocoder_url, params=params).json()
+        return places_location_response
+    except Exception as ex:
+        print(ex)
+        raise Request_Exception('Error when making request')
 
 
 def get_first_place_lat_lon(places_location_response):
