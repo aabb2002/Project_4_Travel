@@ -64,16 +64,20 @@ def myTravelEventInfo():
 
 @app.route('/saveuserinfo',methods=['POST'])
 def saveuserinfo():
-    for n in range(0,3):
-        country = request.form.get('country')
-        city = request.form.get('city')
+    
+    yelp_3_events_descriptions = request.form.get('yelp_3_events_descriptions')
+    country = request.form.get('country')
+    city = request.form.get('city')
+    print(yelp_3_events_descriptions)
+    for event in yelp_3_events_descriptions:
         event_name = request.form.get('event')
         #destin_from_date = request.form.get('destin_from_date')
         #destin_to_date = request.form.get('destin_to_date')
         print(city, country,event_name)
         save_event_flask = Event(event_name,country,city)
         save_event_flask.save_event()
-        return ('Success')
+        
+    return ('Success')
    # return render_template('saved_destinations.html', saved=saved)
 
 @app.route('/saveduserinfo',methods=['GET'])
@@ -82,8 +86,10 @@ def show_saved_destinations():
     # get destinations from the database 
     saved = MyTravelEvents()
     #show_events = []
+    
     show_events = saved.get_all_events()
-    #show_events.fetchall()
+    #show_events.fetch(all()
+    
     print(show_events)
     #for i in show_events:
     #TODO database object to show on the screen
