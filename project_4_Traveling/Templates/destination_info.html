@@ -7,7 +7,8 @@
     <title>MyTravelEvent</title>
 </head>
 <body>
-   <h4>MyEventInfo</h4>
+    <form method = "GET"  action="getuserinfo" >
+        <h4>MyEventInfo</h4>
 
         <label> Information for {{destin_city}}, {{destin_country}}</label> <br>
 
@@ -18,27 +19,28 @@
             {% endfor %}
         {%else:%}
             <p>Looks like there are no events for your dated listed on Yelp. Try a longer date range.</p>
-        {%endif%}
-        <br>
+            {%endif%}
+            <br>
         <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week: </label>
         <br>
         {% for weather in weather_7_days%}
             {{weather}}<br>
         {% endfor %}
-        <br>
+            <br>
 
         <label for="currency_converter">Currency converter: $1 USD =  {{conversion_rate}} {{destin_currency}}</label><br>
-        <br>
+            <br>
         <a href = "homepage.html">Go to homepage</a>
-        <br><br><br>
-    
+            <br><br><br>
+        
+    </form>
     <form method="POST" action="saveuserinfo">
             
-            
+        <input type="hidden" name="city" value ="{{destin_city}}">
+        <input type="hidden" name="country" value ="{{destin_country}}">
         {% for event in yelp_3_events_descriptions%}
             <input type="hidden" name="event" value ="{{event}}">
-            <input type="hidden" name="city" value ="{{destin_city}}">
-            <input type="hidden" name="country" value ="{{destin_country}}">
+            
             <!-- <input type="hidden" name="destin_from_date" value ="{{destin_from_date}}">
             <input type="hidden" name="destin_to_date" value ="{{destin_to_date}}"> -->
         {% endfor %}
