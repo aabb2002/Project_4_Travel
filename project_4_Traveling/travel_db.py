@@ -57,9 +57,9 @@ class MyTravelEvents:
             # events.append(event)
             event = Event(r['event_name'], r['country'], r['city'])
             events.append(event)
-
-        con.close()            # event object.
         return events  
+        con.close()            # event object.
+        
 
  
     def add_event(self, event):
@@ -75,10 +75,11 @@ class MyTravelEvents:
                 #res = con.execute( event_insert_sql, (event.event_name, event.destin_from_date,event.destin_to_date, event.country, event.city) )     
                 res = con.execute( event_insert_sql, (event.event_name, event.country, event.city) )   
                 new_id = res.lastrowid  # Get the ID of the new row in the table 
-                event.event_name = new_id  # Set this event                   
+                event.event_name = new_id  # Set this event                  
         except sqlite3.IntegrityError as e:
             raise RecordError(f'Error - this event is already in the database. {event}') from e
         finally:
+            #return res
             con.close()
 
 
