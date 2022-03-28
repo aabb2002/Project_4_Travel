@@ -1,6 +1,6 @@
 # Daria's portion
 
-from flask import Flask, render_template, request,redirect
+from flask import Flask, render_template, request,redirect, url_for
 
 
 from currency_api import get_conversion_rate
@@ -63,24 +63,29 @@ def myTravelEventInfo():
 
 @app.route('/saveuserinfo',methods=['POST'])
 def saveuserinfo():
-    #form_data = request.form 
-    country = request.form.get('country')
-    city = request.form.get('city')
-    event_name = request.form.get('event')
+    for i in range (1,3):
+        country = request.form.get('country')
+        city = request.form.get('city')
+
+        event_name = request.form.get('event')
     #destin_from_date = request.form.get('destin_from_date')
     #destin_to_date = request.form.get('destin_to_date')
-    print(city, country,event_name)
-    var = Event(event_name,country,city)
-    saved = var.save_event()
-    #return redirect('/show_saved')
-    return render_template('saved_destinations.html', saved=saved)
+        print(city, country,event_name)
+        save_event_flask = Event(event_name,country,city)
+        save_event_flask.save_event()
+    return ('Success')
+   # return render_template('saved_destinations.html', saved=saved)
 
-@app.route('/show_saved')
+@app.route('/saveduserinfo',methods=['GET'])
+#@app.route('/show_saved')
 def show_saved_destinations():
     # get destinations from the database 
-    saved = MyTravelEvents()
-    show_events = saved.get_all_events()
-
+    #saved = MyTravelEvents()
+    #show_events = []
+    show_events = MyTravelEvents.get_all_events()
+    print(show_events)
+    #for i in show_events:
+    #TODO database object to show on the screen
     return render_template('saved_destinations.html', show_events = show_events)
     
     

@@ -8,9 +8,13 @@
     
 </head>
 <body>
-    {{saved}}
-    {{show_events}}
+    <form method = ["GET"] action = saveduserinfo >
+
     
+        {%for show_event in show_events%}
+            {{show_event}}<br>
+        {% endfor %}   
     
+    </form>
 </body>
 </html>
