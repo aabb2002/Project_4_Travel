@@ -5,21 +5,34 @@ db = 'My_Travel_Events.sqlite'  # create datbase and variable is assigned.
 
 class Event:
     def __init__(self, country, city,event_name):
-        
-        #self.event_date = event_date
         self.country = country
         self.city = city
         self.event_name = event_name
 
-        #self.destin_from_date = destin_from_date
-        #self.destin_to_date = destin_to_date
-
         self.myTravelEvent = MyTravelEvents()
 
 
+   
+    def __str__(self):
+        return f"{self.event_name=} {self.country=} {self.city=}"    
+
+
+    def __eq__(self, other):
+        return self.event_name == other.event_name and self.country == other.country and self.city == other.city 
+        #  
+    
+    
+    def __ne__(self, other):
+        return self.event_name == other.event_name and self.country == other.country and self.city == other.city 
+        
+
+
     def save_event(self):
-        if self.event_name:
+        if not self.event_name:
+             raise RecordError('Event does not have data, can\'t add')
+        elif self.event_name:
             self.myTravelEvent.add_event(self)
+
 
 
 class MyTravelEvents:
@@ -28,11 +41,9 @@ class MyTravelEvents:
     Provides operations to create database add, display/query the database. need to have a command:
     "IF NOT EXISTS for tables and DB's." """
 
-    #instance = None
 
     def __init__(self):
-        #create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, event_date DATE, country text, city text)'
-        #create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT UNIQUE NOT NULL, destin_from_date DATE, destin_to_date DATE, country text, city text)'
+        
         create_table_sql = 'CREATE TABLE IF NOT EXISTS Events (event_name TEXT NOT NULL,country text, city text)'
                                  
         con = sqlite3.connect(db)
@@ -50,36 +61,34 @@ class MyTravelEvents:
         con.row_factory = sqlite3.Row
         rows = con.execute(get_all_events_sql)
         events = []
-
         for r in rows:
-            # event = Event(r['event_name'], r['event_date'], r['country'], r['city'])
-            # event = Event(r['event_name'], r['destin_from_date'], r['destin_to_date'], r['country'], r['city'])
-            # events.append(event)
             event = Event(r['event_name'], r['country'], r['city'])
             events.append(event)
-        return events  
-        con.close()            # event object.
-        
+                        
+            con.close()            
+            return events  
 
  
     def add_event(self, event):
         """save button - Adds event to database. Raises RecordError if 
-        a event is already in the database (event_name unique.) TODO - do we need to think about case? """     
-        #event_insert_sql = 'INSERT INTO Events (event_name, event_date, country, city) VALUES (?, ?, ?, ?, ? )'  
-        #event_insert_sql = 'INSERT INTO Events (event_name, destin_from_date,destin_to_date, country, city) VALUES (?, ?, ?, ?, ? )'  
+        a event is already in the database (event_name unique.)  """     
+        
         event_insert_sql = 'INSERT INTO Events (event_name, country, city) VALUES (?, ?, ? )'   
                
         try: 
-            with sqlite3.connect(db) as con:
-                #res = con.execute( event_insert_sql, (event.event_name, event.event_date, event.country, event.city) ) 
-                #res = con.execute( event_insert_sql, (event.event_name, event.destin_from_date,event.destin_to_date, event.country, event.city) )     
-                res = con.execute( event_insert_sql, (event.event_name, event.country, event.city) )   
-                new_id = res.lastrowid  # Get the ID of the new row in the table 
-                event.event_name = new_id  # Set this event                  
+            with sqlite3.connect(db) as con:                   
+                res = con.execute( event_insert_sql, (event.event_name, event.country, event.city) )                              
         except sqlite3.IntegrityError as e:
             raise RecordError(f'Error - this event is already in the database. {event}') from e
         finally:
-            #return res
+            con.close()
+
+
+    def delete_events_all(self):
+            '''deleting all the events from Events table'''
+            delete_all_sql = 'DELETE from Events'
+            with sqlite3.connect(db) as con:
+                deleted = con.execute(delete_all_sql)
             con.close()
 
 
@@ -94,6 +103,3 @@ class MyTravelEvents:
 
 class RecordError(Exception):
     pass
-
-
-
