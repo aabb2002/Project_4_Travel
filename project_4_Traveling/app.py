@@ -1,5 +1,6 @@
 # Daria's portion
 
+from pyexpat import model
 from flask import Flask, render_template, request,redirect, url_for
 
 
@@ -63,7 +64,7 @@ def myTravelEventInfo():
 
 @app.route('/saveuserinfo',methods=['POST'])
 def saveuserinfo():
-    for n in range(1,3):
+    for n in range(0,3):
         country = request.form.get('country')
         city = request.form.get('city')
         event_name = request.form.get('event')
@@ -82,6 +83,7 @@ def show_saved_destinations():
     saved = MyTravelEvents()
     #show_events = []
     show_events = saved.get_all_events()
+    #show_events.fetchall()
     print(show_events)
     #for i in show_events:
     #TODO database object to show on the screen

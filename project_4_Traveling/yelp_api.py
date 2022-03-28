@@ -25,8 +25,7 @@ def get_travel_info(destin_country, destin_city,destin_from_date, destin_to_date
 
     yelp_response = make_yelp_request(yelp_url, headers, params)
 
-    yelp_3_events_descriptions = data_presentation_yelp(yelp_response
-    
+    yelp_3_events_descriptions = data_presentation_yelp(yelp_response)
 
     return yelp_3_events_descriptions
 
@@ -120,7 +119,7 @@ def data_presentation_yelp(yelp_response):
         #print(names)
   
         return yelp_3_events_descriptions
-        #,names_event
+        
     else:
         return('')
     
