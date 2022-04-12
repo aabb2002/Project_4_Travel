@@ -36,6 +36,7 @@ def get_weather_forecast(destin_country, destin_city):
 
     # weather_total = get_current_weather_description(forecast_response)
 
+    # do we get 4 days of weather, or 7? 
     weather_4_days = get_weather_7_days(forecast_response)
 
     return weather_4_days
@@ -85,9 +86,9 @@ def get_first_place_lat_lon(places_location_response):
 def get_weather_7_days(forecast_response):
     # printing the text from the response 
     parsed_weather_result = json.loads(forecast_response.text)
-    #print(json.dumps(parsed_weather_result, indent=4))
+    #print(json.dumps(parsed_weather_result, indent=4))   # remove unused code 
     daily = parsed_weather_result["daily"]
-    #print(json.dumps(daily, indent=4))
+    #print(json.dumps(daily, indent=4))  
     weather_total = list()
     for day in daily:
         dt = datetime.datetime.fromtimestamp(day["dt"]).strftime('%Y-%m-%d')
@@ -104,8 +105,13 @@ def get_weather_7_days(forecast_response):
 
                 short_description = description["description"]
         
+        # it's usually better to return the processed data and then let the recipient 
+        # decide how to format and present to the user. What if you wanted to display a table 
+        # of the weather info on the web page? Difficult if you need to parse a string, easier 
+        # if you have a data structure with the data in. 
         weather_7_days = f'On {dt}: it should be {day_temp}F. Description: {short_description} '
        
         weather_total.append(weather_7_days)
+        
     return weather_total
  
