@@ -13,24 +13,24 @@
         <label> Information for {{destin_city}}, {{destin_country}}</label> <br>
 
         <label for="event_info">Information regarding your Yelp events for the dates entered:</label><br>
-        {%if yelp_3_events_descriptions is defined and yelp_3_events_descriptions|length>0%}
-            {% for event in yelp_3_events_descriptions%}
+        {% if yelp_3_events_descriptions is defined and yelp_3_events_descriptions|length>0%}
+            {% for event in yelp_3_events_descriptions %}
                 {{event}}<br>
             {% endfor %}
-        {%else:%}
+        {% else %}
             <p>Looks like there are no events for your dated listed on Yelp. Try a longer date range.</p>
-            {%endif%}
+            {% endif %}
             <br>
         <label for="weather_data">Weather data for current weather at your destination and upcoming weather for the week: </label>
         <br>
-        {% for weather in weather_7_days%}
+        {% for weather in weather_7_days %}
             {{weather}}<br>
         {% endfor %}
             <br>
 
         <label for="currency_converter">Currency converter: $1 USD =  {{conversion_rate}} {{destin_currency}}</label><br>
             <br>
-        <a href = "homepage.html">Go to homepage</a>
+        <a href = "/">Go to homepage</a>  
             <br><br><br>
         
     </form>
@@ -39,6 +39,7 @@
         <input type="hidden" name="city" value ="{{destin_city}}">
         <input type="hidden" name="country" value ="{{destin_country}}">
         <input type="hidden" name="yelp_3_events_descriptions" value ="{{yelp_3_events_descriptions}}">
+
         {% for event in yelp_3_events_descriptions%}
             <input type="hidden" name="event" value ="{{event}}">
             
@@ -46,16 +47,12 @@
             <input type="hidden" name="destin_to_date" value ="{{destin_to_date}}"> -->
         {% endfor %}
         
-   
-
         <button type="save" name="save_button" value="Save">save</button>
     
-
     </form>
-    <form method="GET" action="saveduserinfo">
-        <button type="save" name="saved_button" value="Show saved">show my saved events </button>
+    <!-- This can be a regular a link -->
+     <a href="/saveduserinfo">show my saved events </a> 
 
-    </form>
     
 </body>
 

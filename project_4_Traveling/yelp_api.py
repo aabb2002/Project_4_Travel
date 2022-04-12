@@ -4,7 +4,7 @@ from wsgiref import headers
 import requests
 import os
 import time
-from datetime import date,datetime
+from datetime import date, datetime
 import datetime
 import json
 from currency_api import Request_Exception
@@ -17,7 +17,7 @@ def get_travel_info(destin_country, destin_city,destin_from_date, destin_to_date
     #dates
     unix_from_time = generate_unix_from_date(destin_from_date)
 
-    unix_to_time = generate_unix_to_date(destin_to_date)
+    unix_to_time = generate_unix_from_date(destin_to_date)
 
     headers = generate_headers()
 
@@ -48,6 +48,7 @@ def make_yelp_request(yelp_url, headers, params):
     try:
         yelp_response = requests.get(yelp_url,headers=headers, params=params)
     # proceed only if the status code is 200
+        yelp_response.raise_for_status()
         print_yelp_status(yelp_response)
         return yelp_response
     except Exception as ex:
@@ -69,24 +70,31 @@ def generate_unix_from_date(destin_from_date):
     unix_from_time= int(time.mktime(datetime.datetime.strptime(from_date_constructor,"%d/%m/%Y").timetuple()))
     return unix_from_time
 
-def generate_unix_to_date(destin_to_date):
-    t_dates=destin_to_date.split("-")
-    #converting unix time to dd/mm/yyyy time format for the yelp events end date 
-    t_date= t_dates[2]
-    t_month= t_dates[1]
-    t_year= t_dates[0]
+    # or simpler,
+    # date_object = datetime.fromisoformat(destin_from_date)
+    # return int(date_object.timestamp()) 
 
-    t_date_constructor = t_date +'/'+ t_month + '/'+t_year
 
-    unix_to_time= int(time.mktime(datetime.datetime.strptime(t_date_constructor,"%d/%m/%Y").timetuple()))
-    return unix_to_time
+
+# this is the same as the function above, you can re-use it 
+# def generate_unix_to_date(destin_to_date):
+#     t_dates=destin_to_date.split("-")
+#     #converting unix time to dd/mm/yyyy time format for the yelp events end date 
+#     t_date= t_dates[2]
+#     t_month= t_dates[1]
+#     t_year= t_dates[0]
+
+#     t_date_constructor = t_date +'/'+ t_month + '/'+t_year
+
+#     unix_to_time= int(time.mktime(datetime.datetime.strptime(t_date_constructor,"%d/%m/%Y").timetuple()))
+#     return unix_to_time
 
 def data_presentation_yelp(yelp_response):
     # printing the text from the response 
     parsed_yelp_result = json.loads(yelp_response.text)
     #loading th parsed yelp result. We are usign Python json library to format the JSON file into a dictionary
     #print(json.dumps(parsed_yelp_result, indent=4))
-    #print(yelp_response)
+    print(yelp_response)
     #print(yelp_response.keys())
     #the loaded dictionary file will have 2 main elements: events with a list of lists as a value and total number of events with a number as a value
     events = parsed_yelp_result["events"]

@@ -98,6 +98,7 @@ class TestTravelDB(TestCase):
             empty.save_event()
 
 
+    # A test to check for rejecting duplicate events would be helpful
        
 
    

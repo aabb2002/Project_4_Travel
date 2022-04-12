@@ -65,13 +65,17 @@ class MyTravelEvents:
             event = Event(r['event_name'], r['country'], r['city'])
             events.append(event)
                         
-            con.close()            
-            return events  
+        # the close and return statements should be after the loop ends, or it will
+        # return after the first row has been read          
+        con.close()  
+        return events  
 
  
     def add_event(self, event):
         """save button - Adds event to database. Raises RecordError if 
         a event is already in the database (event_name unique.)  """     
+
+        # In the database, the event_name column is no-null but there are no unique constraints set
         
         event_insert_sql = 'INSERT INTO Events (event_name, country, city) VALUES (?, ?, ? )'   
                
@@ -79,6 +83,7 @@ class MyTravelEvents:
             with sqlite3.connect(db) as con:                   
                 res = con.execute( event_insert_sql, (event.event_name, event.country, event.city) )                              
         except sqlite3.IntegrityError as e:
+            # whatever calls this function should anticipate and handle this error 
             raise RecordError(f'Error - this event is already in the database. {event}') from e
         finally:
             con.close()

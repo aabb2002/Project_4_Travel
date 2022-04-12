@@ -1,8 +1,8 @@
 # Daria's portion
+import traceback
 
 from pyexpat import model
-from flask import Flask, render_template, request,redirect, url_for
-
+from flask import Flask, render_template, request, redirect, url_for
 
 from currency_api import get_conversion_rate
 
@@ -23,44 +23,51 @@ def homepage():
 @app.route('/getuserinfo') 
 def myTravelEventInfo():
 
-    print(request.args)
-    # city, country info from HTML user inputs on homepage.html
-    destin_city = request.args.get('destin_city')
-    destin_country = request.args.get('destin_country')
+    try:
 
-    # To and om dates in mm/dd/yyyy format from HTML user inputs on homepage.html
-    destin_from_date=request.args.get('destin_from_date')
-    destin_to_date=request.args.get('destin_to_date')
+        print(request.args)
+        # city, country info from HTML user inputs on homepage.html
+        destin_city = request.args.get('destin_city')
+        destin_country = request.args.get('destin_country')
 
-    # destination currency (abbreviated) from the HTML user input on homepage.html
-    destin_currency = request.args.get('destin_currency')
-    #our base currency is USD but changing it to any other currency abbreviation would work the same
-    #if changing, change the html homepage explanation to the user
-    
+        # To and om dates in mm/dd/yyyy format from HTML user inputs on homepage.html
+        destin_from_date=request.args.get('destin_from_date')
+        destin_to_date=request.args.get('destin_to_date')
 
-    if (destin_country, destin_city, destin_from_date, destin_to_date, destin_currency):
-        yelp_3_events_descriptions = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
-        #names_event = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
-        conversion_rate = get_conversion_rate(destin_currency)
-        weather_7_days = get_weather_forecast(destin_country, destin_city)
-        conversion_rate_rounded = round(conversion_rate,2)
+        # destination currency (abbreviated) from the HTML user input on homepage.html
+        destin_currency = request.args.get('destin_currency')
+        #our base currency is USD but changing it to any other currency abbreviation would work the same
+        #if changing, change the html homepage explanation to the user
         
 
-        return render_template(
-            'destination_info.html', 
-            destin_city=destin_city,
-            destin_country=destin_country,
-            destin_from_date=destin_from_date,
-            destin_to_date=destin_to_date,
-            destin_currency = destin_currency,
-            conversion_rate=conversion_rate_rounded, 
-            weather_7_days = weather_7_days,
-            yelp_3_events_descriptions=yelp_3_events_descriptions)
-            #names_event = names_event)
-    
+        if (destin_country, destin_city, destin_from_date, destin_to_date, destin_currency):
+            yelp_3_events_descriptions = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
+            #names_event = get_travel_info(destin_country, destin_city,destin_from_date,destin_to_date)
+            conversion_rate = get_conversion_rate(destin_currency)
+            weather_7_days = get_weather_forecast(destin_country, destin_city)
+            conversion_rate_rounded = round(conversion_rate,2)
+            
 
-    else:
-        return "Please fill out all the fields"
+            return render_template(
+                'destination_info.html', 
+                destin_city=destin_city,
+                destin_country=destin_country,
+                destin_from_date=destin_from_date,
+                destin_to_date=destin_to_date,
+                destin_currency = destin_currency,
+                conversion_rate=conversion_rate_rounded, 
+                weather_7_days = weather_7_days,
+                yelp_3_events_descriptions=yelp_3_events_descriptions)
+                #names_event = names_event)
+        
+
+        else:
+            return "Please fill out all the fields"
+
+    except Exception as e:
+        traceback.print_exc() # replace with logging statement 
+        return 'Sorry, an error occurred'  # this could be more user friendly. 
+
 
 @app.route('/saveuserinfo',methods=['POST'])
 def saveuserinfo():
@@ -77,8 +84,10 @@ def saveuserinfo():
         save_event_flask = Event(event_name,country,city)
         save_event_flask.save_event()
         
-    return ('Success')
-   # return render_template('saved_destinations.html', saved=saved)
+    # return ('Success')
+    # more user-friendly to show the user the list of destinations. Use a redirect 
+    return redirect('saveduserinfo')   
+
 
 @app.route('/saveduserinfo',methods=['GET'])
 #@app.route('/show_saved')

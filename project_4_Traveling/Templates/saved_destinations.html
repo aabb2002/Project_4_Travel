@@ -8,13 +8,17 @@
     
 </head>
 <body>
-    <form method = ["GET"] action = saveduserinfo >
+    <!-- what is this form for? -->
+    <!-- <form method = "GET" action = saveduserinfo > -->
 
     
         {%for show_event in show_events%}
             {{show_event}}<br>
+            Name: {{ show_event.event_name}} <br>
+            Country: {{ show_event.country}}
+            <!-- etc. format more neatly -->
         {% endfor %}   
     
-    </form>
+    <!-- </form> -->
 </body>
 </html>

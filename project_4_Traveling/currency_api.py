@@ -10,12 +10,11 @@ currency_convertor_key = os.environ.get('EXCHANGE_RATE_KEY')
 class Request_Exception(Exception):
     pass
 
+# it doesn't make any difference to how the program runs if you put spaces between 
+# lines, but be consistent with how you format code. It's easier to read. 
 def get_conversion_rate(destin_currency):
-
-    params = generate_request_params_for_currency(destin_currency)
-    
+    params = generate_request_params_for_currency(destin_currency) 
     conversion_response = make_currency_requests(currency_convertor_url, params)
-
     return conversion_response
 
 
